@@ -1,0 +1,70 @@
+/*//////////////////*/
+/*//// Onglets /////*/
+/*//////////////////*/
+
+.onglet
+{
+        display:inline-block;
+        margin-left:3px;
+        margin-right:3px;
+        margin-top: 20px;;
+        padding:3px;
+        border:1px solid black;
+        cursor:pointer;
+}
+.onglet_0
+{
+        background:#dddddd;
+        border-bottom:0px solid black;
+        padding-bottom:4px;
+}
+.onglet_1
+{
+        background:#bbbbbb;
+        border-bottom:0px solid black;
+}
+
+.contenu_onglet
+{
+        border:1px solid black;
+        border-radius:10px;
+        padding:5px;
+        display:none;
+        overflow-x: scroll;
+        width: 100%;
+}
+
+#onglet_frli{
+    margin-left: 20px;
+}
+
+#onglet_crea{
+    float: right;
+    margin-right: 20px;
+}
+
+/*//////////////////*/
+/*// facturation ///*/
+/*//////////////////*/
+
+#contenu_modif label,
+#contenu_onglet_crea label{
+    font-weight: bold;
+    color: #003366;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    font-size: 110%;
+}
+
+#modif_factu_client,
+#crea_factu_client{
+    display: block;
+    width: 820px;
+    margin: 20px auto auto auto;
+    padding-bottom: 40px;
+}
+
+#modif_factu_client label,
+#crea_factu_client label{
+    display: inline-block;
+}

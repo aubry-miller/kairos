@@ -1,0 +1,101 @@
+/*//////////////////*/
+/* //// Fonts ///// */
+/*//////////////////*/
+
+@font-face {
+    font-family: Omnes-Black;
+    src: local('/Fonts/Omnes/Omnes-Black.otf') format("OpenType Fonts");
+
+    font-family: Omnes-light;
+    src: local('/Fonts/Omnes/Omnes-Light.otf') format("OpenType Fonts");
+
+    font-family: Omnes-bold;
+    src: local('/Fonts/Omnes/Omnes-Bold.otf') format("OpenType Fonts");
+}
+
+/*//////////////////*/
+/* ///// Base ///// */
+/*//////////////////*/
+
+body {
+    margin: 20px;
+    font-family: "Omnes-Black",Verdana, Arial, Helvetica, sans-serif;
+    background : url("../images/fond_accueil.png") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+    
+form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: 0px;
+    width: 300px;
+}
+    
+input {
+    border: solid  3px  white;
+    margin-bottom: 10px;
+    padding: 16px;
+    outline: none;
+    border-radius: 7px;
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+input[type=submit]{
+    width: 339px;
+    background-color: white;
+    color: #003366;
+}
+
+.erreur {
+    text-align: center;
+    color: red;
+    margin-top: 10px;
+}
+    
+a {
+    font-size: 14pt;
+    color: blue;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.form_connexion{
+    position: absolute;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: 100px;
+}
+
+.logo_accueil{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -65px;
+    margin-top: -220px;
+    width: 168px;
+}
+
+#pseudo{
+    background-image: url("../images/symbol_user.png");
+    background-repeat: no-repeat;
+    background-position: 15px 10px;
+}
+
+#password{
+    background-image: url("../images/cadenas.png");
+    background-repeat: no-repeat;
+    background-position: 15px 10px;
+}
