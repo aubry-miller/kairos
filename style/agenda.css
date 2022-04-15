@@ -1,0 +1,92 @@
+.liste{
+width:250px;
+margin-bottom:3px;
+margin-top:30px;
+background-color:white;
+color:#003366;
+border: 1px solid #003366;
+}
+.tableau {
+margin:0px auto 20px auto;
+border: medium solid #003366;
+border-collapse: collapse;
+text-align:left;
+cursor:default;
+
+}
+.tableau caption
+{
+text-align:center;
+background-color:#003366;
+font-family:"Trebuchet MS",Verdana,Helvetica,sans-serif;
+font-weight:bold;
+font-size:20pt;
+color:white;
+padding:25px;
+margin-top:3px;
+}
+.tableau th {
+font-family:"Myriad Pro Light",Verdana,Helvetica,sans-serif;
+border: thin solid #999999;
+padding: 2px;
+background-color: rgba(0,51,102,0.4);
+font-size:20px;
+font-weight:bold;
+text-align:center;
+width: 150px;
+}
+.tableau td {
+font-family:Verdana, Arial, Helvetica,serif;
+border: thin solid #999999;
+padding: 10px;
+font-weight:bold;
+min-height: 40px;
+}
+.desactive
+{
+background-color:#dddddd;
+}
+td.ferier
+{
+background-color:#9cbdfb;
+}
+.special
+{
+background-color:rgba(0,51,102,0.4);
+color:#990000;
+text-decoration:blink;
+}
+#notif
+{
+	padding:5px 10px;
+	margin-top:10px;
+	border:2px solid #000000;
+	width:250px;
+	background-color:#996633;
+	color:#FFFFFF;
+	font-size:15pt;
+}
+#lien {margin-top:20px;}
+#lien a,#lien a:visited{
+padding:10px 30px;
+background-color:rgba(0,51,102,0.4);
+color:#FFFFFF;
+border:1px solid #333333;
+text-decoration:none;
+}
+
+
+.agenda_num{
+	display: block;
+	text-align: left;
+}
+
+.contenu_agenda{
+	display: block;
+}
+
+.case{
+	display: block;
+	width: 140px;
+	min-height: 40px;
+}

@@ -1,0 +1,220 @@
+#masque_fleche_bas,
+#masque{
+    display: none;
+}
+
+.fond_inline,
+.inline{
+    display: inline-block;
+}
+
+.block{
+    display: block !important;
+}
+
+.mt-40{
+    margin-top: 40px;
+}
+
+.mt-100{
+    margin-top: 100px;
+}
+
+.ml-m200{
+    margin-left:-200px;
+}
+
+.w-200{
+    width: 200px;
+}
+
+.ml-28{
+    margin-left:7rem !important;
+}
+
+.ml-12{
+    margin-left:3rem !important;
+}
+
+.ml-5px{
+    margin-left:5px !important;
+}
+
+.mr-40px{
+    margin-right: 40px;
+}
+
+.w-cpc{
+    width:100% !important;
+}
+
+.overflow-x-scroll{
+    overflow-x:scroll!important;
+}
+
+.symbol_top *,
+.symbol_pen *{
+    color: #003366;
+}
+
+.vert-align_center{
+    vertical-align: middle;
+}
+
+.symbol_pen{
+    text-decoration: none;
+    font-size: 300%;
+    margin-right: 20px;
+    border: medium solid #003366;
+    border-radius: 20px;
+    padding: 0 5px;
+    width: 50px;
+    text-align: center;
+}
+
+.symbol_top{
+    position:fixed; 
+    right:0; 
+    bottom:0;
+    text-decoration: none;
+    font-size: 400%;
+    margin-right: 20px;
+    padding: 0 5px;
+    width: 50px;
+    text-align: center;
+}
+
+.symbol_top:hover,
+.symbol_pen:hover{
+    width: auto;
+}
+
+
+.symbol_pen span{
+    display: none;
+    font-size:33%;
+    padding-right: 10px;
+}
+
+.symbol_top span{
+    display: none;
+    font-size:25%;
+    padding-right: 10px;
+}
+
+.symbol_top:hover span,
+.symbol_pen:hover span{
+    display:initial;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.mode_block,
+.menu_admin_pao{
+    text-align: right;
+    padding-right: 50px;
+}
+
+.choix_fond{
+    display: inline-block;
+    width: 250px; 
+    height:140px; 
+    text-align:center;
+    background-size:cover;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    margin-top: 20px;
+}
+
+.text_choix_fond{
+    padding-top: 30px; 
+    font-size:15px;
+    font-weight:bold;
+}
+
+#decalibration>a>div{
+    display: none;
+}
+
+#decalibration:hover>a>div{
+    display: block;
+    position: absolute;
+    margin-left: -50px;
+    margin-top: -10px;
+}
+
+.btnc{
+    align-items: center;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    display: inline-flex;
+    justify-content: center;
+    vertical-align: baseline;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.429;
+    padding: .5rem .75rem;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+}
+
+.btn-successc{
+    background-color:#91c714;
+    border-color:#91c714;
+    color: white;
+    border-radius: 5px;
+}
+
+.flag{
+    width: 50px;
+}
+
+.connec_phone_box{
+    display: none;
+}
+
+.ck-editor>label{
+    display: none !important;
+}
+
+@media screen and (max-width: 700px){
+    .choix_fond{
+        display: inline-block;
+        width: 100% !important; 
+        height:auto !important; 
+        text-align:center;
+        background-size:cover;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        margin-top: 20px;
+    }
+
+    .choix_fond_block{
+        width: 100% !important;
+    }
+
+    .fond_inline{
+        width: 80% !important;
+        display: block;
+    }
+
+    .menu_admin_pao{
+        margin-top: 10px !important;
+        padding-right: 0;
+    }
+
+    .marg-phone{
+        padding-bottom: 80px !important;
+    }
+
+    .radio-phone{
+        margin-left: 0 !important;
+    }
+
+    .connec_phone_box{
+        display: block;
+        width:100% !important;
+        margin: 10px auto -300px auto;
+    }
+    .connec_phone{
+        width: 100%;
+    }
+}
