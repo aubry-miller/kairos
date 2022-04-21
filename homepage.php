@@ -1,5 +1,6 @@
 <?php
 include('sql/get.php');
+include('sql/engine.php');
 
 ?>
 
@@ -23,7 +24,7 @@ include('sql/get.php');
 <!-- END: Head -->
 <body class="main">
         <?php include('contents/header.php'); ?>
-<?php $results= get_all_machine();
+<?php $results= workflow_selection(1);
 var_dump($results);
 ?>
 <?php include('contents/footer.php'); ?>
