@@ -218,11 +218,32 @@ function get_steps_by_flow_id($fl_id){
 function get_mandrel_use_in_period($mandrel_diameter, $step_id, $beggining_date, $end_date){
     $pdo=connect();
 
-    $verify = $pdo->prepare("select * from planning_task, piece where pt_piece_id=pc_id and pc_mandrel_diameter = ?
-    and pt_step_id = ? and pt_planned_start_date > ? and pt_planned_start_date < ?");
+    $verify = $pdo->prepare("select * from planning_task, piece where pt_piece_id=pc_id and pc_mandrel_diameter = ? and pt_step_id = ? and pt_planned_start_date > ? and pt_planned_start_date < ?");
     $verify->execute(array($mandrel_diameter, $step_id, $beggining_date, $end_date));
     $results = $verify->fetchAll();
     $pdo=null;
     
     return $results;
+}
+
+function get_mandrel_id_by_specifications($diameter, $form,$lenght,$sector){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select mn_id from mandrel where mn_diameter=? and mn_form=? and mn_lenght>? and mn_sector_id=?");
+    $verify->execute(array($diameter, $form,$lenght,$sector));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function count_task_at_date_with_mandrel_id($date, $mandrel){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select count(*) from planning_task where DATEDIFF(pt_planned_start_date,?) = 0 and pt_mandrel_id=?");
+    $verify->execute(array($date, $mandrel));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results[0]['count(*)'];
 }
