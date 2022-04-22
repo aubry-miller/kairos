@@ -1,7 +1,10 @@
 <?php
-function first_planningSimulation($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date,$product_type,$rubber,$sleeve_lenght,$table_lenght,$sleeve_offset,$mandrel_diameter,$notch,$notch_position,$developement,$fiber,$fiber_thickness,$chip,$cutback,$cutback_diameter){
+function first_planningSimulation($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date,$product_type,$rubber,$sleeve_lenght,$table_lenght,$sleeve_offset,$mandrel_diameter,$notch,$notch_position,$developement,$fiber,$fiber_thickness,$chip,$cutback,$cutback_diameter,$form){
+    // Table of days of the week
+    $Daysweek = array('1', '2', '3', '5', '5', '6', '7'); //7=>Sunday, 1=>Monday , 2=>Tuesday , 3=>Wednesday, 4=>Thursday , 5=>Friday, 6=>Saturday
+    
     // Create a new order with the status "awaiting validation" in database
-    new_order($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date);
+    //new_order($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date);
 
     //recovery of id from Millnet values
     $product_type_id=get_product_type_id_by_label($product_type);
@@ -32,7 +35,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
         }
 
         // We create the piece in the database
-        new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_lenght, $table_lenght, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
+        //new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_lenght, $table_lenght, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
 
         // We want to check if we have the minimum required time available to manufacture the piece
         // We will look for the minimum time according to the workflow and the rubber
@@ -54,8 +57,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
             
             //Once the data is recorded, we look at the manufacturing steps through the workflow
             $steps=get_steps_by_flow_id($flow_id);
-
-            echo 'piece '.$n.'=> <br>';
+            echo '--------<br>PIECE '.$n.'=> <br>';
             //for each piece we look step by step since the end of the process
             for($i=20;$i>0;$i--){
                 //only if the part exists
@@ -69,7 +71,78 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                         // We check if the step requires a mandrel
                         if($steps[$i]['stp_needs_mandrel'] == 1){
                             // The step needs a mandrel
-                            echo ' needs a mandrel';
+                            echo ' needs a mandrel <br>';
+
+                            // We select the mandrels id
+                            $mandrel_ids = get_mandrel_id_by_specifications($mandrel_diameter, $form,$sleeve_lenght,$steps[$i]['stp_sector_id']);
+                           
+                            // We look if a carrier of the right diameter is used in the period
+                            $others=get_mandrel_use_in_period($mandrel_diameter, $steps[$i]['stp_id'],date('Y-m-d'),$deadline);
+                            
+                            // We loop to see if we still have time, depending on the day of the week
+                            foreach ($others as $other){
+                                // We get the date on which the start of production is planned, and we remove the time
+                                $other_date=substr($other['pt_planned_start_date'], 0, 10);
+                                var_dump($other_date);
+                                $tomorrow=new DateTime($other_date);
+                                $tomorrow->modify('+1 day');
+                                $tomorrow_string = $tomorrow->format('Y-m-d H:i:s');
+                                $yesterday=new DateTime($other_date);
+                                $yesterday->modify('-1 day');
+                                $yesterday_string = $yesterday->format('Y-m-d H:i:s');
+                                // Extraction of the day, month, year of the date
+                                list($day, $month, $year) = explode('-', $other_date);
+                                // Timestamp calculation
+                                $timestamp = mktime (0, 0, 0, $month, $day, $year);
+                                // Day of the week
+                                $day_number = $Daysweek[date("w",$timestamp)];
+                                echo 'day =>'.$day_number.'<br>';
+                                if($day_number==1 || $day_number == 7){
+                                    echo 'date planned =>'.$other_date.' On regarde les dispos à j+1 <br>';
+                                    
+                                    foreach($mandrel_ids as $mandrel_id){
+                                        //regarder dans planning task si ce jour (n+1) le mandrel avec cet id est occupé ou non
+                                        $dispo=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
+                                        if($dispo != 0){
+                                            echo 'non dispo'.$tomorrow_string.' <br>';
+                                        } else {
+                                            echo 'dispo'.$tomorrow_string.' <br>';
+                                        }
+                                    }
+
+                                } else if ($day_number==2 || $day_number == 3 || $day_number == 4){
+                                    echo 'date planned =>'.$other_date.' On regarde les dispos à j+1 et j-1 <br>';
+                                    foreach($mandrel_ids as $mandrel_id){
+                                        //regarder dans planning task si ce jour (n+-1) le mandrel avec cet id est occupé ou non
+                                        $dispo_tomorrow=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
+                                        if($dispo_tomorrow != 0){
+                                            echo 'non dispo le '.$tomorrow_string.' <br>';
+                                        } else {
+                                            echo 'dispo le '.$tomorrow_string.' <br>';
+                                        }
+
+                                        $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
+                                        if($dispo_yesterday != 0){
+                                            echo 'non dispo le '.$yesterday_string.' <br>';
+                                        } else {
+                                            echo 'dispo le '.$yesterday_string.' <br>';
+                                        }
+                                    }
+                                } else if ($day_number=5 || $day_number == 6){
+                                    echo 'date planned =>'.$other_date.' On regarde les dispos à j-1 <br>';
+
+                                    foreach($mandrel_ids as $mandrel_id){
+                                        //regarder dans planning task si ce jour (n-1) le mandrel avec cet id est occupé ou non
+                                        
+                                        $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
+                                        if($dispo_yesterday != 0){
+                                            echo 'non dispo le '.$yesterday_string.' <br>';
+                                        } else {
+                                            echo 'dispo le '.$yesterday_string.' <br>';
+                                        }
+                                    }
+                                }
+                            }
 
 
 
@@ -80,6 +153,9 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                         }
                     }
                     echo '<br>';
+
+                    $minimum_time=$minimum_time-$steps[$i]['stp_minimum_time'];
+                    echo ' minimum time' .$minimum_time .'<br>';
                 }
             }
             echo '<br>';

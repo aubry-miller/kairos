@@ -19,6 +19,7 @@ $deadline=date('2022-06-21');
 $status='awaiting validation';
 $saving_date= date('Y-m-d H:i:s');
 
+$form='parallel';
 $product_type='engraving sleeves';
 $rubber= '166014K';
 $sleeve_lenght='1100';
@@ -34,8 +35,6 @@ $chip= '0';
 $cutback='0';
 $cutback_diameter='0';
 
-$result=get_mandrel_use_in_period('98', '4');
-var_dump($result);
 
-$plan_result=first_planningSimulation($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date,$product_type,$rubber,$sleeve_lenght,$table_lenght,$sleeve_offset,$mandrel_diameter,$notch,$notch_position,$developement,$fiber,$fiber_thickness,$chip,$cutback,$cutback_diameter);
+$plan_result=first_planningSimulation($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date,$product_type,$rubber,$sleeve_lenght,$table_lenght,$sleeve_offset,$mandrel_diameter,$notch,$notch_position,$developement,$fiber,$fiber_thickness,$chip,$cutback,$cutback_diameter,$form);
 echo $plan_result;
