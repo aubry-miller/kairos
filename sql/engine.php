@@ -103,10 +103,25 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                     foreach($mandrel_ids as $mandrel_id){
                                         //regarder dans planning task si ce jour (n+1) le mandrel avec cet id est occupé ou non
                                         $dispo=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
-                                        if($dispo != 0){
-                                            echo 'non dispo'.$tomorrow_string.' <br>';
-                                        } else {
+                                        if($dispo == 0){
                                             echo 'dispo'.$tomorrow_string.' <br>';
+                                            echo 'On doit vérifier si le délais est toujours respecté';
+                                            //si delais ok on continu la programmation
+                                            $interval = $now->diff($tomorrow);
+                                            $available_time= $interval->format('%a');
+
+                                            // We recover the sign (- if previous date)
+                                            $available_sign= $interval->format('%R');
+                                            
+                                            // We check if the delay is sufficient
+                                            if($available_time >= $minimum_time && $available_sign=='+'){
+                                                echo 'Délai ok <br>';
+                                            } else {
+                                                echo 'délai KO, on continu <br>';
+                                            }
+                                        } else {
+                                            echo 'non dispo'.$tomorrow_string.' <br>';
+                                            echo 'On continue la boucle  <br>';
                                         }
                                     }
 
@@ -115,18 +130,49 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                     foreach($mandrel_ids as $mandrel_id){
                                         //regarder dans planning task si ce jour (n+-1) le mandrel avec cet id est occupé ou non
                                         $dispo_tomorrow=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
-                                        if($dispo_tomorrow != 0){
-                                            echo 'non dispo le '.$tomorrow_string.' <br>';
-                                        } else {
+                                        if($dispo_tomorrow == 0){
                                             echo 'dispo le '.$tomorrow_string.' <br>';
+                                            echo 'On doit vérifier si le délais est toujours respecté';
+                                            //si delais ok on continu la programmation
+                                            $interval = $now->diff($tomorrow);
+                                            $available_time= $interval->format('%a');
+
+                                            // We recover the sign (- if previous date)
+                                            $available_sign= $interval->format('%R');
+                                            
+                                            // We check if the delay is sufficient
+                                            if($available_time >= $minimum_time && $available_sign=='+'){
+                                                echo 'Délai ok <br>';
+                                            } else {
+                                                echo 'délai KO, on continu <br>';
+                                            }
+                                        } else {
+                                            echo 'non dispo le '.$tomorrow_string.' <br>';
+
+                                            $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
+                                            if($dispo_yesterday == 0){
+                                                echo 'dispo le '.$yesterday_string.' <br>';
+                                                echo 'On doit vérifier si le délais est toujours respecté';
+                                                //si delais ok on continu la programmation
+                                                $interval = $now->diff($yesterday);
+                                                $available_time= $interval->format('%a');
+    
+                                                // We recover the sign (- if previous date)
+                                                $available_sign= $interval->format('%R');
+                                                
+                                                // We check if the delay is sufficient
+                                                if($available_time >= $minimum_time && $available_sign=='+'){
+                                                    echo 'Délai ok <br>';
+                                                } else {
+                                                    echo 'délai KO, on continu <br>';
+                                                }                                       
+                                            } else {
+                                                echo 'non dispo le '.$yesterday_string.' <br>';
+                                                echo 'On continue la boucle <br>';
+                                            }
                                         }
 
-                                        $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
-                                        if($dispo_yesterday != 0){
-                                            echo 'non dispo le '.$yesterday_string.' <br>';
-                                        } else {
-                                            echo 'dispo le '.$yesterday_string.' <br>';
-                                        }
+                                        
                                     }
                                 } else if ($day_number=5 || $day_number == 6){
                                     echo 'date planned =>'.$other_date.' On regarde les dispos à j-1 <br>';
@@ -135,14 +181,42 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         //regarder dans planning task si ce jour (n-1) le mandrel avec cet id est occupé ou non
                                         
                                         $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
-                                        if($dispo_yesterday != 0){
-                                            echo 'non dispo le '.$yesterday_string.' <br>';
-                                        } else {
+                                        if($dispo_yesterday == 0){
                                             echo 'dispo le '.$yesterday_string.' <br>';
+                                            echo 'On doit vérifier si le délais est toujours respecté';
+                                            //si delais ok on continu la programmation
+                                            $interval = $now->diff($yesterday);
+                                            $available_time= $interval->format('%a');
+
+                                            // We recover the sign (- if previous date)
+                                            $available_sign= $interval->format('%R');
+                                            
+                                            // We check if the delay is sufficient
+                                            if($available_time >= $minimum_time && $available_sign=='+'){
+                                                echo 'Délai ok <br>';
+                                            } else {
+                                                echo 'délai KO, on continu <br>';
+                                            } 
+                                        } else {
+                                            echo 'non dispo le '.$yesterday_string.' <br>';
+                                            echo 'On continue la boucle <br>';
                                         }
                                     }
                                 }
                             }
+
+
+
+
+
+
+
+                            // When this code is played, it means that we can't program the manufacturing on a support already released in the workshop
+                            // We must therefore search for the date when a mandrel is available
+                            
+
+
+
 
 
 
