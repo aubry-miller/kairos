@@ -226,11 +226,11 @@ function get_mandrel_use_in_period($mandrel_diameter, $step_id, $beggining_date,
     return $results;
 }
 
-function get_mandrel_id_by_specifications($diameter, $form,$lenght,$sector){
+function get_mandrel_id_by_specifications($diameter, $form,$length,$sector){
     $pdo=connect();
 
-    $verify = $pdo->prepare("select mn_id from mandrel where mn_diameter=? and mn_form=? and mn_lenght>? and mn_sector_id=?");
-    $verify->execute(array($diameter, $form,$lenght,$sector));
+    $verify = $pdo->prepare("select mn_id from mandrel where mn_diameter=? and mn_form=? and mn_length>? and mn_sector_id=?");
+    $verify->execute(array($diameter, $form,$length,$sector));
     $results = $verify->fetchAll();
     $pdo=null;
     
@@ -246,4 +246,125 @@ function count_task_at_date_with_mandrel_id($date, $mandrel){
     $pdo=null;
     
     return $results[0]['count(*)'];
+}
+
+function select_operators_by_sector($sector){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from user, link_operator_sector where los_operator=us_id and los_sector=?");
+    $verify->execute(array($sector));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_operators_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from user where us_id=?");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results[0];
+}
+
+function verification_operator_presence_at_date($id_operator, $date){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from operator_absences where oa_operator_id=? and (oa_start_hour_date like ? or oa_end_hour_date like ?)");
+    $verify->execute(array($id_operator, $date.'%', $date.'%'));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function verification_operator_overtime_at_date($id_operator, $date){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from overtime_operator where oo_operator_id=? and oo_date = ?");
+    $verify->execute(array($id_operator, $date));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_operator_default_time_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from operator_default_time where odt_user_id=?");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_job_duration_by_date_and_user_id($date,$id_operator){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select pt_expected_duration from planning_task where pt_planned_start_date like ? and pt_operator_id=?");
+    $verify->execute(array($date.'%',$id_operator));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_machines_by_sector_diameter_and_length($sector, $diameter, $length){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from machine where mc_sector_id=? and (mc_mandrel_diameter_max>=? or mc_mandrel_diameter_max is null) and (mc_max_length>=? or mc_max_length is null) and mc_status='enabled'");
+    $verify->execute(array($sector, $diameter, $length));
+    $results = $verify->fetchAll();
+    $pdo=null;
+
+    return $results;
+}
+
+function select_machines_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from machine where mc_id=?");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+
+    return $results[0];
+}
+
+function get_mandrel_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from mandrel where mn_id=?");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results[0];
+}
+
+function verification_machine_stop_at_date($id,$date){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from machine_stop where ms_machine_id=? and ( ms_start_hour_date like ? or ms_end_hour_date like ?)");
+    $verify->execute(array($id, $date.'%',$date.'%'));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_job_duration_by_date_and_machine_id($date,$id_machine){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select pt_expected_duration from planning_task where pt_planned_start_date like ? and pt_machine_id=?");
+    $verify->execute(array($date.'%',$id_machine));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
 }

@@ -7,5 +7,6 @@
 @$password = $_POST["password"];
 @$passwordConf = $_POST["passconf"];
 @$pass_crypt = md5($_POST["password"]);
-@$tracking_time = "7" //temps que sont conservé les lignes de trackage 
+@$tracking_time = "7"; //temps que sont conservé les lignes de trackage
+
 ?>
