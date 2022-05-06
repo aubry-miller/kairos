@@ -121,7 +121,8 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
             // We loop to see if we still have time, depending on the day of the week
             foreach ($others as $other){
                 // We get the date on which the start of production is planned, and we remove the time
-                $other_date=substr($other['pt_planned_start_date'], 0, 10);
+                // $other_date=substr($other['pt_planned_start_date'], 0, 10);//CHANGER LE 6 MAI
+                $other_date=$other['pt_date'];
                 $tomorrow=new DateTime($other_date);
                 $tomorrow->modify('+1 day');
                 $tomorrow_string = $tomorrow->format('Y-m-d H:i:s');
@@ -416,7 +417,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
 
     // Create a new order with the status "awaiting validation" in database
-    // new_order($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,'awaiting validation',$saving_date);
+    new_order($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,'awaiting validation',$saving_date);
 
 
     // We test the feasibility within the deadline
@@ -434,7 +435,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
         
         // We create the piece in the database
-        //new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
+        new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
 
         // We want to check if we have the minimum required time available to manufacture the piece
         // We will look for the minimum time according to the workflow and the rubber
@@ -552,17 +553,20 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                     
                                     $planning[$piece_id][$steps[$i]['stp_label']]['machine']=$verif_machine;
                                     
-                                    // $d = strtotime($deadline_task);
-                                    // $deadline_task = date("Y-m-d", mktime(0,0,0,date("m", $d),date("d", $d)-1,date("Y", $d)));
-
-                                    // $d = strtotime($result[$piece_number][$i]);
-                                    // var_dump($d);
-                                    // $deadline_task= date("Y-m-d", mktime(0,0,0,date("m", $d),date("d", $d)-1,date("Y", $d)));
                                     if($result[$piece_number][$i] != null){
                                         $d = strtotime($result[$piece_number][$i]);
                                         $deadline_task= date("Y-m-d", mktime(0,0,0,date("m", $d),date("d", $d)-1,date("Y", $d)));
                                     }
+                                    //Enregistrer les tash dans planning tash
+                                    if(strpos($steps[$i]['stp_id'], 'stock') == false){
+                                        if(!isset($planning[$piece_id][$steps[$i]['stp_label']]['mandrel_id'])){
+                                            $mandrel_id=null;               
+                                        } else {
+                                            $mandrel_id=$planning[$piece_id][$steps[$i]['stp_label']]['mandrel_id'];
+                                        }
 
+                                        new_planning_task($piece_id, $steps[$i]['stp_id'], '01:00:00', $result[$piece_number][$i], $planning[$piece_id][$steps[$i]['stp_label']]['machine'], $planning[$piece_id][$steps[$i]['stp_label']]['operator'],  $mandrel_id);//TODO changer la durée
+                                    }
                                     // echo '<br>';
                                 // } else {
                                 //     echo 'Pas de machine en production correspondant aux critères <br>';
@@ -635,8 +639,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
         //TODO verifier avant si une piece avec cette id n'exite pas déjà
         // new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
 
-        //Enregistrer les tash dans planning tash
-
+        
     }
     
     $planning['status']=true;
