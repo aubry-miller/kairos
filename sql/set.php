@@ -16,3 +16,11 @@ function new_piece($pc_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_le
     $pdo=null;
 }
 
+function new_planning_task($piece,$step,$duration,$date,$machine,$operator,$mandrel){
+    $pdo=connect();
+    
+    $ins = $pdo->prepare("INSERT INTO `planning_task`(`pt_piece_id`,`pt_step_id`,`pt_expected_duration`,`pt_date`,`pt_machine_id`,`pt_operator_id`,`pt_mandrel_id`) VALUES (?,?,?,?,?,?,?)");
+    $ins->execute(array($piece,$step,$duration,$date,$machine,$operator,$mandrel));
+    $pdo=null;
+}
+

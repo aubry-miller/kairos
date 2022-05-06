@@ -240,7 +240,7 @@ function get_mandrel_id_by_specifications($diameter, $form,$length,$sector){
 function count_task_at_date_with_mandrel_id($date, $mandrel){
     $pdo=connect();
 
-    $verify = $pdo->prepare("select count(*) from planning_task where DATEDIFF(pt_planned_start_date,?) = 0 and pt_mandrel_id=?");
+    $verify = $pdo->prepare("select count(*) from planning_task where DATEDIFF(pt_date,?) = 0 and pt_mandrel_id=?");
     $verify->execute(array($date, $mandrel));
     $results = $verify->fetchAll();
     $pdo=null;
@@ -361,7 +361,7 @@ function verification_machine_stop_at_date($id,$date){
 function select_job_duration_by_date_and_machine_id($date,$id_machine){
     $pdo=connect();
 
-    $verify = $pdo->prepare("select pt_expected_duration from planning_task where pt_planned_start_date like ? and pt_machine_id=?");
+    $verify = $pdo->prepare("select pt_expected_duration from planning_task where pt_date like ? and pt_machine_id=?");
     $verify->execute(array($date.'%',$id_machine));
     $results = $verify->fetchAll();
     $pdo=null;
