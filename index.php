@@ -4,18 +4,19 @@ include("infos.php");
 @$valider = $_POST["valider"];
 $erreur = "";
 if (isset($_POST["valider"])) {
+    include('sql/connect.php');
     include('sql/get.php');
     $user = get_user_by_pseudo_and_password($pseudo, $pass_crypt);
 if (count($user) > 0) {
     session_start();
-    $_SESSION["ID"] = $user[0]["ID"];
-    $_SESSION["prenom_nom"] = ucfirst(strtolower($user[0]["prenom"])) ." "  .  strtoupper($user[0]["nom"]);
-    $_SESSION["mail"] = strtolower($user[0]["prenom"]).'.'.strtolower($user[0]["nom"]).'@millergraphics.com';
+    $_SESSION["ID"] = $user[0]["us_id"];
+    $_SESSION["prenom_nom"] = ucfirst(strtolower($user[0]["us_firstname"])) ." "  .  strtoupper($user[0]["us_name"]);
+    $_SESSION["mail"] = strtolower($user[0]["us_firstname"]).'.'.strtolower($user[0]["us_name"]).'@millergraphics.com';
     $_SESSION["pseudo"] = $pseudo;
+    $_SESSION["language"] = $user[0]["us_language_id"];
 
-    //tracker
+
     include("sql/set.php");
-    //tracker($_SESSION["ID"], 'Connexion à l\'application');
 
     header("location:homepage.php");
 } else

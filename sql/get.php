@@ -1,4 +1,16 @@
 <?php
+ 
+ function trad($key,$language){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from trad where trad_key=?");
+    $sqlQuery->execute(array($key));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result[0][$language]; 
+
+ }
 
 function get_user_by_pseudo_and_password($pseudo, $pass_crypt){
     $pdo=connect();
@@ -363,6 +375,28 @@ function select_job_duration_by_date_and_machine_id($date,$id_machine){
 
     $verify = $pdo->prepare("select pt_expected_duration from planning_task where pt_date like ? and pt_machine_id=?");
     $verify->execute(array($date.'%',$id_machine));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_all_temp_orders(){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from temp_order order by temp_millnet_id ASC");
+    $verify->execute();
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_all_orders_awainting(){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from orders where od_status = 'awaiting validation' order by od_millnet_id ASC");
+    $verify->execute();
     $results = $verify->fetchAll();
     $pdo=null;
     
