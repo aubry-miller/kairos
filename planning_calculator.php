@@ -2,49 +2,73 @@
 include('sql/connect.php');
 include('sql/get.php');
 include('sql/set.php');
+include('sql/delete.php');
 include('sql/engine.php');
 include('infos.php');
+
 
 //received data
 
 //for test
-$millnet_order_id='00111111';
-$millnet_order_part_id='001-000';
+$millnet_order_id=$_GET['millnet_order_id'];
+$millnet_order_part_id=$_GET['millnet_order_part_id'];
 $millnet_id= $millnet_order_id.'-'.$millnet_order_part_id;
 
-$customer_number='11122';
-$customer_name='customerTest';
-$csr='Olivier Pouzeau';
-$piece_number=2;
-$deadline=date('2022-06-07');
-// $deadline=date('2022-05-07'); //Wrong date for test
+$customer_number=$_GET['customer_number'];
+$customer_name=$_GET['customer_name'];
+$csr=$_GET['csr'];
+$piece_number=$_GET['piece_number'];
+$deadline=date($_GET['deadline']);
 $status='awaiting validation';
-$saving_date= date('Y-m-d H:i:s');
-
+$saving_date=$_GET['saving_date'];
 $form='parallel';
-$product_type='engraving sleeves';
-$rubber= '166014K';
-$sleeve_length='1100';
-$table_length='1000';
-$sleeve_offset='0';
-$mandrel_diameter='78';
-$notch= '20';
-$notch_position= 'Left';
-$developement= '254';
-$fiber= 'standard';
-$fiber_thickness= '1.3';
-$chip= '0';
-$cutback='0';
-$cutback_diameter='0';
+$product_type=$_GET['product_type'];
+$rubber= $_GET['rubber'];
+$sleeve_length=$_GET['sleeve_length'];
+$table_length=$_GET['table_length'];
+$sleeve_offset=$_GET['sleeve_offset'];
+$mandrel_diameter=$_GET['mandrel_diameter'];
+$notch= $_GET['notch'];
+$notch_position= $_GET['notch_position'];
+$developement= $_GET['developement'];
+$fiber= $_GET['fiber'];
+$fiber_thickness= $_GET['fiber_thickness'];
+$chip= $_GET['chip'];
+$cutback=$_GET['cutback'];
+$cutback_diameter=$_GET['cutback_diameter'];
 
 
 $plan_result=first_planningSimulation($millnet_id,$customer_number,$customer_name,$csr,$piece_number,$deadline,$status,$saving_date,$product_type,$rubber,$sleeve_length,$table_length,$sleeve_offset,$mandrel_diameter,$notch,$notch_position,$developement,$fiber,$fiber_thickness,$chip,$cutback,$cutback_diameter,$form);
 
-
 if($plan_result['status'] == false){
+
     echo $plan_result['reasons'];
+    delete_order($millnet_id);
+
+    //TODO Demander si la personne désir avoir le meilleur délai possible pour lancer, ou non, son calcul.
+    ?>
+    <br>
+    Voulez-vous connaitre à quelle date la fabrication peut-être réalisée ?
+    <form action="back/best_deadline.php" method="get">
+        <?php
+        if(isset($_GET['temp_id'])){
+            ?>
+            <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
+            <?php
+        }
+        ?>
+        <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
+        <input type="submit" name="submit" value="Yes">
+        <input type="submit" name="submit" value="No">
+        <?php
+        ?>
+    </form>
+    <?php
 }
 else {
+    if(isset($_GET['temp_id'])){
+        delete_temp_order($_GET['temp_id']);
+    }
 
     if($piece_number<10){
         $id_last_piece=$millnet_id.'_00'.$piece_number;
@@ -56,21 +80,8 @@ else {
     }
 
     echo 'The fabrication is possible.<br> Deadline => '.$plan_result[$id_last_piece]['rectification']['date'].'<br>';
+    echo '<hr>';
 
-
-    
-
-
-    // $planning['product_type_id']=$product_type_id;
-    // $planning['flow_id']=$flow_id;
-    // $planning['rubber_id']=$flow_id;
-    // $planning['notch_id']=$notch_id;
-    // $planning['fiber_id']=$fiber_id;
-    // $planning['sleeve_length']=$sleeve_length;
-    // $planning['mandrel_diameter']=$mandrel_diameter;
-    // $planning['developement']=$developement;
-    // $planning['fiber_thickness']=$fiber_thickness;
-    // $planning['cutback_diameter']=$cutback_diameter;
 
     for($i=1;$i<=$piece_number;$i++){
         if($i<10){
@@ -81,7 +92,7 @@ else {
         } else {
             $piece_id=$millnet_id.'_'.$i;
         }
-        echo'<br>------- '. $piece_id.' -------<br>';
+        echo'------- '. $piece_id.' -------<br>';
         
         $steps=get_steps_by_flow_id($plan_result['flow_id']);
 
@@ -102,10 +113,24 @@ else {
                 $machine=select_machines_by_id($plan_result[$piece_id][$step['stp_label']]['machine']);
                 echo 'Machine => '.$machine['mc_label'].'<br>';
             }
+            
         }
         
-        
+        echo '<hr>';
 
     }
 
+    ?>
+    <br>
+    Confirmer la commande ?
+    <form action="back/confirm.php" method="get">
+        <input type="hidden" name="piece_number" value="<?php echo $piece_number;?>">
+        <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
+        <input type="submit" name="submit" value="Yes">
+        <input type="submit" name="submit" value="&#x260E; Hold the date">
+        <input type="submit" name="submit" value="No">
+        <?php
+        ?>
+    </form>
+    <?php
 }

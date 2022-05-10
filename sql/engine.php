@@ -435,7 +435,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
         
         // We create the piece in the database
-        new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
+        // new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
 
         // We want to check if we have the minimum required time available to manufacture the piece
         // We will look for the minimum time according to the workflow and the rubber
@@ -637,7 +637,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
         // We create the piece
 
         //TODO verifier avant si une piece avec cette id n'exite pas déjà
-        // new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
+        new_piece($piece_id, $millnet_id, $product_type_id, $rubber_id, $sleeve_length, $table_length, $sleeve_offset, $mandrel_diameter, $notch, $notch_position, $developement, $fiber_id, $fiber_thickness, $chip, $cutback, $cutback_diameter, $flow_id);
 
         
     }
