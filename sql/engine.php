@@ -130,7 +130,7 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                 $yesterday->modify('-1 day');
                 $yesterday_string = $yesterday->format('Y-m-d H:i:s');
                 // Extraction of the day, month, year of the date
-                list($day, $month, $year) = explode('-', $other_date);
+                list($day, $month, $year) = explode('-', $other_date);// a voir si les variables ne sont pas dans un mauvais ordre
                 // Timestamp calculation
                 $timestamp = mktime (0, 0, 0, $month, $day, $year);
                 // Day of the week

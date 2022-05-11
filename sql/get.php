@@ -402,3 +402,14 @@ function select_all_orders_awainting(){
     
     return $results;
 }
+
+function select_temp_orders_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from temp_order where temp_id=?");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results[0];
+}
