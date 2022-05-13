@@ -413,3 +413,90 @@ function select_temp_orders_by_id($id){
     
     return $results[0];
 }
+
+function get_grinding_time($diam, $sleeve_length){
+    $pdo=connect();
+    $pi=pi();
+    $dev=ceil($diam*$pi); // ceil => ounded up to the nearest whole number
+
+    $test=0;
+    while($test==0){
+        $verify_dev = $pdo->prepare("select * from abacus_grinding_dev where agd_dev=?");
+        $verify_dev->execute(array($dev));
+        $dev_results = $verify_dev->fetchAll();
+        if($dev_results ==[]){
+            $dev++;
+        } else {
+            $test=1;
+        }
+    }
+    
+    $sleeve_length=ceil($sleeve_length/100)*100;
+    
+    $test2=0;
+    while($test2==0){
+        $verify_lz = $pdo->prepare("select * from abacus_table where ab_diam=?");
+        $verify_lz->execute(array($sleeve_length));
+        $lz_results = $verify_lz->fetchAll();
+        if($lz_results ==[]){
+            $sleeve_length=ceil($sleeve_length/100+1)*100;
+        } else {
+            $test2=1;
+        }
+    }
+    
+    $pdo=null;
+
+    $ref=$dev_results[0]['agd_time'];
+    $multiplicateur=$lz_results[0]['ab_multipl'];
+    $constante=$dev_results[0]['agd_const'];
+
+
+    $temps= round(($ref+($multiplicateur*$constante)),2);
+    
+    return $temps;
+}
+
+function get_lining_time($diam, $sleeve_length){
+    $pdo=connect();
+    
+    $pi=pi();
+    $dev=ceil($diam*$pi); // ceil => ounded up to the nearest whole number
+
+    $test=0;
+    while($test==0){
+        $verify_dev = $pdo->prepare("select * from abacus_lining_dev where ald_dev=?");
+        $verify_dev->execute(array($dev));
+        $dev_results = $verify_dev->fetchAll();
+        if($dev_results ==[]){
+            $dev++;
+        } else {
+            $test=1;
+        }
+    }
+
+    $sleeve_length=ceil($sleeve_length/100)*100;
+    
+    $test2=0;
+    while($test2==0){
+        $verify_lz = $pdo->prepare("select * from abacus_table where ab_diam=?");
+        $verify_lz->execute(array($sleeve_length));
+        $lz_results = $verify_lz->fetchAll();
+        if($lz_results ==[]){
+            $sleeve_length=ceil($sleeve_length/100+1)*100;
+        } else {
+            $test2=1;
+        }
+    }
+    
+    $pdo=null;
+
+    $ref=$dev_results[0]['ald_time'];
+    $multiplicateur=$lz_results[0]['ab_multipl'];
+    $constante=$dev_results[0]['ald_const'];
+
+
+    $temps= round((($ref/1.1)+($multiplicateur*$constante))*1.1,2);
+    
+    return $temps;
+}

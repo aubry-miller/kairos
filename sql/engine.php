@@ -59,6 +59,30 @@ function test_availability_mandrel($possibily,$mandrel_ids,$date_with_margin){
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////// FUNCTION calculate_task_duration ///////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////// Beggining ///////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function calculate_task_duration($step, $mandrel_diameter, $sleeve_length){
+   
+    if($step=='4'){//grinding time
+       $time=get_grinding_time($mandrel_diameter, $sleeve_length);
+    } else if($step=='2' || $step=='6'){//lining time
+        $time=get_lining_time($mandrel_diameter, $sleeve_length);
+    } else {
+        $time='0.5'; //TODO mettre les autres abaques
+    }
+   return $time;
+}
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////// FUNCTION calculate_task_duration ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////// End //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////// FUNCTION dateDiff /////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////// Beggining //////////////////////////////////////////////////////////////
@@ -313,7 +337,7 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
     ////////////////////////////////////////////////////////////// Beggining ////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_key){
+function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_key,$duration,$sleeve_length){
     //on retourne chercher les caractéristique du mandrel
     $mandrel=get_mandrel_by_id($_SESSION[$session_key]['mandrel_id']);
     // on cherche les machines de l'étape correspondants aux critères
@@ -350,8 +374,8 @@ function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_
                     $machine_capacity_hours=date_create($machine['mc_daily_hourly_capacity'])->format('H');
                     $machine_capacity_minutes=date_create($machine['mc_daily_hourly_capacity'])->format('i');
                     $machine_capacity=$machine_capacity_hours*60+$machine_capacity_minutes;
-
-                    if($machine_capacity >= $machine_day_charge){//TODO ajouter durée de la tache via abaques
+                    
+                    if($machine_capacity >= ($machine_day_charge + $duration)){
                         // echo 'OK la machine est disponible, Id machine : '.$machine['mc_label'];
                         return $machine['mc_id'];
                     } else{
@@ -501,6 +525,26 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                         
                     }
 
+                    // Task duration
+                    $duration=calculate_task_duration($steps[$i]['stp_id'],$mandrel_diameter,$sleeve_length);
+                    $wip=strstr($duration, '.');
+                    echo $wip;
+                    if(strlen($wip) == 1){
+                        $wip='00';
+                    }if(strlen($wip) == 2){
+                        $wip=$wip.'0';
+                    }if(strlen($wip) == 3){
+                        $wip=substr(strstr($wip, '.'),1);
+                    }
+                    $duration_minutes=round(intval($wip)/100*60,0);
+                    $duration_hours=strstr($duration, '.', true);
+                    if(strlen($duration_hours)==1){
+                        $duration_hours='0'.$duration_hours;
+                    }
+                    $duration_time=$duration_hours.':'.$duration_minutes.':00';
+
+                    $planning[$piece_id][$steps[$i]['stp_label']]['during']=$duration_time;
+
                     //check si present ce jour dans la table absence
                     foreach($operators as $operator){
                         $presence=verification_operator_presence_at_date($operator['us_id'],$result[$piece_number][$i]);
@@ -531,7 +575,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                 $day_jobs_during=$day_jobs_hours*60+$day_jobs_minutes;
                                 $dispo_time=$dispo_time-$day_jobs_during;//TODO ajouter durée de la tache via abaques
                             }
-                            if($dispo_time>=0){
+                            if(($dispo_time+$duration)>=0){
                                 
                                 $planning[$piece_id][$steps[$i]['stp_label']]['date']=$result[$piece_number][$i];//TODO changer label en id
                                 $planning[$piece_id][$steps[$i]['stp_label']]['operator']=$operator['us_id'];//TODO changer label en id
@@ -542,9 +586,9 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                 ///////////////////////////////////////////////////////////////////////////////////
                                 //////////////////////////// MACHINE AVAILABILITY CHECK ///////////////////////////
                                 //////////////////////////////////// Beggining ////////////////////////////////////
-
+                                    
                                     // We check the machine availability at the date
-                                    $verif_machine=check_machine_availability($steps[$i]['stp_id'],$result[$piece_number][$i],$mandrel_diameter,$session_key);
+                                    $verif_machine=check_machine_availability($steps[$i]['stp_id'],$result[$piece_number][$i],$mandrel_diameter,$session_key,$duration,$sleeve_length);
                                     if($verif_machine == false){
                                         $planning['status']=false;
                                         $planning['reasons']='No machine available, it is therefore impossible to manufacture the order within this period';
@@ -564,8 +608,8 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         } else {
                                             $mandrel_id=$planning[$piece_id][$steps[$i]['stp_label']]['mandrel_id'];
                                         }
-
-                                        new_planning_task($piece_id, $steps[$i]['stp_id'], '01:00:00', $result[$piece_number][$i], $planning[$piece_id][$steps[$i]['stp_label']]['machine'], $planning[$piece_id][$steps[$i]['stp_label']]['operator'],  $mandrel_id);//TODO changer la durée
+                                        
+                                        new_planning_task($piece_id, $steps[$i]['stp_id'], $planning[$piece_id][$steps[$i]['stp_label']]['during'], $result[$piece_number][$i], $planning[$piece_id][$steps[$i]['stp_label']]['machine'], $planning[$piece_id][$steps[$i]['stp_label']]['operator'],  $mandrel_id);//TODO changer la durée
                                     }
                                     // echo '<br>';
                                 // } else {
@@ -591,8 +635,10 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                             // si la date du début contien 00:00:00 et la date de fin contient 23:59:59 alors l'opérateur est absent la journée
                            
                             if( (strpos($presence[0]['oa_start_hour_date'], '00:00:00') !== false) && (strpos($presence[0]['oa_end_hour_date'], '23:59:59')!== false)){
+                                //TODO
                                 // echo "<br>absent toute la journée<br>";
                             } else{
+                                //TODO
                                 // echo '<br>absence partielle<br>';
                                 // temps de travail normal moins temps d'absence
                             }
