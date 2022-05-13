@@ -1,6 +1,7 @@
 <?php
 include('../sql/connect.php');
 include('../sql/engine.php');
+include('../sql/set.php');
 
 if($_GET['submit'] == 'No'){
     include('../sql/delete.php');
@@ -11,6 +12,10 @@ if($_GET['submit'] == 'No'){
     include('../sql/get.php');
     echo 'calculer le meilleur planning possible <br>';
     //Il faut récupérer les informations de la commande temp avec son ID
+
+
+    $session_key=random_int(0,999999999);
+    session_start();
 
     $order=select_temp_orders_by_id($_GET['temp_id']);
 
@@ -44,52 +49,135 @@ if($_GET['submit'] == 'No'){
             //selection du porteur correspondant aux caractéritiques techniques si l'étape en necessite un
             if($step['stp_needs_mandrel']== 1){
                 $mandrels=get_mandrel_id_by_specifications($order['temp_mandrel_diameter'], $order['temp_mandrel_form'],$order['temp_sleeve_length'],$step['stp_sector_id']);
-                var_dump($mandrels);
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                //TODO tester dispo mandrel à la date
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
-                /////////////////////////////////////
+                // var_dump($mandrels);
+                
                 $test_mandrel=0;
                 while($test_mandrel==0){
                     $test_day=0;
                     while( $test_day==0){
-                        // $tomorrow=new DateTime($step_date);
-                        // $tomorrow->modify('+1 day');
-                        // $tomorrow_string = $tomorrow->format('Y-m-d H:i:s');
-                        
-                        list($year, $month, $day) = explode('-', $step_date);
-                        echo '<br>day='.$day.'<br>month='.$month.'<br>year='.$year.'<br>';
-                        $timestamp = mktime (0, 0, 0, $month, $day, $year);
+                        $tomorrow=new DateTime($step_date);
+                        $tomorrow->modify('+1 day');
+                        $tomorrow_string = $tomorrow->format('Y-m-d');
+                        $step_date=$tomorrow_string;
 
-                        var_dump($timestamp);
-                        // // $step_date=$tomorrow;//Vérifier qu'on ne soit pas un weekend
-                        // // $tomorrow_string = $tomorrow->format('Y-m-d H:i:s');
-                        // list($year, $month, $day) = explode('-', $tomorrow_string);
-                        // var_dump($day);
-                        // // Timestamp calculation
-                        // $timestamp = mktime (0, 0, 0, $month, $day, $year);
-                        // $day_number = DAYSWEEK[date("w",$timestamp)];
-                        // // echo 'day =>'.$day_number.'<br>';
-                        // if($day_number!=1 || $day_number != 7){
+                        
+                        list($year, $month, $day) = explode('-', $tomorrow_string);
+                        echo 'day='.$day.'<br>month='.$month.'<br>year='.$year.'<br>';
+                        $timestamp = mktime (0, 0, 0, $month, $day, $year);
+                    
+                        $day_number = DAYSWEEK[date("w",$timestamp)];
+                        echo 'day =>'.$day_number.'<br>';
+                        if($day_number!=1 && $day_number != 7){
+                            //On n'est pas un samedi ou un dimanche donc la nouvelle date a tester est la bonne
                             $test_day=1;
-                        // }
+                            echo '<br>semaine<br>';
+                        } else{
+                            //Sinon on continu a boucler pour tester un autre jour
+                            $test_day=0;
+                            echo '<br>week-end<br>';
+                        }
                     }
                     
                     foreach($mandrels as $mandrel){
                         $dispo=count_task_at_date_with_mandrel_id($step_date,$mandrel['mn_id']);
                         if($dispo == 0){
                         //mandrel dispo
-                        echo'<br>Porteur dispo<br>';
+
+                        $_SESSION[$session_key]['mandrel_id']=$mandrel['mn_id'];
+                        echo'Porteur dispo<br>';
+                        
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        //On test la présence opérateur
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        /////////////////////////////////////
+                        $operators=select_operators_by_sector($step['stp_sector_id']);
+
+                        foreach($operators as $operator){
+                            $presence=verification_operator_presence_at_date($operator['us_id'],$step_date);
+                            $operator_default_time=select_operator_default_time_by_id($operator['us_id']);
+                            if($presence == []){
+                                echo 'opérateur présent';
+                                //check si present dans overtime
+                                $overtime=verification_operator_overtime_at_date($operator['us_id'],$step_date);
+                                if($overtime == []){
+                                    $additional_time=0;
+                                } else {
+                                    $additional_time = $overtime[0]['oo_during'];
+                                }
+                                $operation_production_time= $operator_default_time[0]['otd_production_time']+$additional_time;
+
+
+                                //travail attribué ce jour
+                                $day_jobs= select_job_duration_by_date_and_user_id($step_date,$operator['us_id']);
+
+                                $dispo_time_hours=floor($operation_production_time);
+                                $dispo_time_minutes=($operation_production_time-$dispo_time_hours)*60;
+                                $dispo_time=$dispo_time_hours*60+$dispo_time_minutes;
+                                
+                                foreach($day_jobs as $day_job){
+                                    $day_jobs_hours=date_create($day_job['pt_expected_duration'])->format('H');
+                                    $day_jobs_minutes=date_create($day_job['pt_expected_duration'])->format('i');
+                                    $day_jobs_during=$day_jobs_hours*60+$day_jobs_minutes;
+                                    $dispo_time=$dispo_time-$day_jobs_during;//TODO ajouter durée de la tache via abaques
+                                }
+                                if($dispo_time>=0){
+                                    $planning[$piece_id][$step['stp_label']]['date']=$step_date;//TODO changer label en id
+                                    $planning[$piece_id][$step['stp_label']]['operator']=$operator['us_id'];//TODO changer label en id
+                                    
+                                    echo '<br>l\'opérateur a le temps de fabriquer, voir la dispo machine<br>';
+                                    
+
+                                    //Test Machine
+                                    $verif_machine=check_machine_availability($step['stp_id'],$step_date,$order['temp_mandrel_diameter'],$session_key);
+                                    
+                                    if($verif_machine == false){
+                                        $planning['status']=false;
+                                        $planning['reasons']='No machine available, it is therefore impossible to manufacture the order within this period';
+                                    }
+
+                                    $planning[$piece_id][$step['stp_label']]['machine']=$verif_machine;
+                                    
+                                    if($step_date != null){
+                                        $d = strtotime($step_date);
+                                        $deadline_task= date("Y-m-d", mktime(0,0,0,date("m", $d),date("d", $d)-1,date("Y", $d)));
+                                    }
+
+                                    //Enregistrer les tash dans planning tash
+                                    if(strpos($step['stp_id'], 'stock') == false){
+                                        if(!isset($planning[$piece_id][$step['stp_label']]['mandrel_id'])){
+                                            $mandrel_id=null;               
+                                        } else {
+                                            $mandrel_id=$planning[$piece_id][$step['stp_label']]['mandrel_id'];
+                                        }
+
+                                        new_planning_task($piece_id, $step['stp_id'], '01:00:00', $step_date, $planning[$piece_id][$step['stp_label']]['machine'], $planning[$piece_id][$step['stp_label']]['operator'],  $mandrel_id);//TODO changer la durée
+                                    }
+                                
+                                
+                                
+                                } else {
+                                    echo '<br>opérateur non dispo, on continu la boucle<br>';
+                                }
+
+
+
+
+                            } else{
+                                echo 'opérateur absent';
+                            }
+                        }
+
                         $test_mandrel=1;
                         break;
                         } else{
@@ -104,20 +192,13 @@ if($_GET['submit'] == 'No'){
 
 
 
-                $test=0;
-                while($test==0){
-                    //select operateur du secteur
-                    $operators=select_operators_by_sector($step['stp_sector_id']);
-                    var_dump($operators);
-                    $test=1;
-
-                }
+            
 
 
             } else {
                 echo "Pas besoin de d'attribuer un porteur<br>";
                 $mandrels=get_mandrel_id_by_specifications($order['temp_mandrel_diameter'], $order['temp_mandrel_form'],$order['temp_sleeve_length'],$step['stp_sector_id']);
-                var_dump($mandrels);
+                // var_dump($mandrels);
                 $test=0;
                 while($test==0){
                     //select operateur du secteur

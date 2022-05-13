@@ -113,6 +113,9 @@ else {
                 $machine=select_machines_by_id($plan_result[$piece_id][$step['stp_label']]['machine']);
                 echo 'Machine => '.$machine['mc_label'].'<br>';
             }
+            if(isset($plan_result[$piece_id][$step['stp_label']]['during'])){
+                echo 'Durée => '.$plan_result[$piece_id][$step['stp_label']]['during'].'<br>';
+            }
             
         }
         
