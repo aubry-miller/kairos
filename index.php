@@ -14,6 +14,7 @@ if (count($user) > 0) {
     $_SESSION["mail"] = strtolower($user[0]["us_firstname"]).'.'.strtolower($user[0]["us_name"]).'@millergraphics.com';
     $_SESSION["pseudo"] = $pseudo;
     $_SESSION["language"] = $user[0]["us_language_id"];
+    $_SESSION['mode']=$users[0]['us_screen_mode'];  
 
 
     include("sql/set.php");
