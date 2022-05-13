@@ -120,7 +120,7 @@ function dateDiff($date1, $date2){
     ////////////////////////////////////////////////////////////// Beggining ////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$deadline_task,$i,$minimum_time,$now_base,$session_key){
+function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$deadline_task,$i,$minimum_time,$now,$session_key){
     
     // echo '<br>'.$steps[$i]['stp_label'].' => ';
     // We check if the step minimum time is differente than 0
@@ -287,7 +287,7 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                 $margin = MARGIN_DEADLINE;
             }
             $date_with_margin=date('Y-m-d', strtotime($deadline_task. ' - '.$margin.' days'));
-            $first_end_date= date('Y-m-d', strtotime($now_base. ' - '.$minimum_time.' days'));
+            $first_end_date= date('Y-m-d', strtotime($now. ' - '.$minimum_time.' days'));
             $date_with_margin_calc = new DateTime($date_with_margin);
             $first_end_date = new DateTime($first_end_date);
             $possibily= $first_end_date->diff($date_with_margin_calc);
@@ -528,7 +528,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                     // Task duration
                     $duration=calculate_task_duration($steps[$i]['stp_id'],$mandrel_diameter,$sleeve_length);
                     $wip=strstr($duration, '.');
-                    echo $wip;
+                    // echo $wip;
                     if(strlen($wip) == 1){
                         $wip='00';
                     }if(strlen($wip) == 2){

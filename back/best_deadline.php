@@ -103,6 +103,24 @@ if($_GET['submit'] == 'No'){
                         /////////////////////////////////////
                         $operators=select_operators_by_sector($step['stp_sector_id']);
 
+                        $duration=calculate_task_duration($steps[$i]['stp_id'],$mandrel_diameter,$sleeve_length);
+                        $wip=strstr($duration, '.');
+                        // echo $wip;
+                        if(strlen($wip) == 1){
+                            $wip='00';
+                        }if(strlen($wip) == 2){
+                            $wip=$wip.'0';
+                        }if(strlen($wip) == 3){
+                            $wip=substr(strstr($wip, '.'),1);
+                        }
+                        $duration_minutes=round(intval($wip)/100*60,0);
+                        $duration_hours=strstr($duration, '.', true);
+                        if(strlen($duration_hours)==1){
+                            $duration_hours='0'.$duration_hours;
+                        }
+                        $duration_time=$duration_hours.':'.$duration_minutes.':00';
+
+                        
                         foreach($operators as $operator){
                             $presence=verification_operator_presence_at_date($operator['us_id'],$step_date);
                             $operator_default_time=select_operator_default_time_by_id($operator['us_id']);
@@ -138,8 +156,8 @@ if($_GET['submit'] == 'No'){
                                     echo '<br>l\'opérateur a le temps de fabriquer, voir la dispo machine<br>';
                                     
 
-                                    //Test Machine
-                                    $verif_machine=check_machine_availability($step['stp_id'],$step_date,$order['temp_mandrel_diameter'],$session_key);
+                                    //Test Machine $sector_id,$date,$mandrel_diameter,$session_key,$duration,$sleeve_length
+                                    $verif_machine=check_machine_availability($step['stp_sector_id'],$step_date,$order['temp_mandrel_diameter'],$session_key,$duration,$order['temp_sleeve_lenght']);
                                     
                                     if($verif_machine == false){
                                         $planning['status']=false;
