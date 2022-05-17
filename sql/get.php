@@ -142,6 +142,17 @@ function get_all_user(){
     return $results;
 }
 
+function get_product_type_label_by_id($id){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select pt_label from product_type where pt_id=? limit 1");
+    $verify->execute(array($id));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results[0]['pt_label'];
+}
+
 function get_product_type_id_by_label($label){
     $pdo=connect();
 
@@ -500,3 +511,38 @@ function get_lining_time($diam, $sleeve_length){
     
     return $temps;
 }
+
+function select_all_product_type(){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from product_type order by pt_id ASC");
+    $verify->execute();
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_image_profil_by_id_user($id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select imgp_adresse from profil_image where imgp_user=? and imgp_active='1'");
+    $sqlQuery->execute(array($id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_all_photo_profil_by_id_user($id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from profil_image where imgp_user=?");
+    $sqlQuery->execute(array($id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }

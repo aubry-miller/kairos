@@ -2,7 +2,7 @@
 include('sql/connect.php');
 include('sql/get.php');
 include('sql/engine.php');
-
+session_start();
 ?>
 
 <!DOCTYPE html>
