@@ -24,3 +24,10 @@ function new_planning_task($piece,$step,$duration,$date,$machine,$operator,$mand
     $pdo=null;
 }
 
+function new_image_profil($image, $id_user){
+    $pdo=connect();
+    
+    $ins = $pdo->prepare("INSERT INTO profil_image(imgp_user, imgp_adresse, imgp_active) VALUES(?,?,?)");
+    $ins->execute(array($id_user, $image, '0'));
+    $pdo=null;
+}

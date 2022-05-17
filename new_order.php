@@ -33,12 +33,12 @@ session_start();
                 <table class="table mt-40">
                         <thead class="table-light">
                                 <tr>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">N° de commande</th>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">Client</th>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">CSR</th>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">Nombre de pièce</th>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">Deadline</th>
-                                <th class="border-bottom-0 text-gray-700 text-nowrap">Statut</th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('order_number',$_SESSION["language"]);?></th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('customer',$_SESSION["language"]);?></th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('csr',$_SESSION["language"]);?></th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('pieces_number',$_SESSION["language"]);?></th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('deadline',$_SESSION["language"]);?></th>
+                                <th class="border-bottom-0 text-gray-700 text-nowrap"><?php echo trad('status',$_SESSION["language"]);?></th>
                                 <th class="border-bottom-0 text-gray-700 text-nowrap"></th>
                                 <tr>
                         </thead>

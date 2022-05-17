@@ -24,12 +24,51 @@
         
         <!-- BEGIN: Notifications -->
         <div class="intro-x dropdown me-4 me-sm-6">
-            
+            <div class="dropdown-toggle notification cursor-pointer" role="button" aria-expanded="false" data-bs-toggle="dropdown"> <i data-feather="bell" class="notification__icon dark-text-gray-300"></i> </div>
+            <div class="notification-content pt-2 dropdown-menu">
+                <div class="notification-content__box dropdown-content">
+                    <div class="notification-content__title dark-text-gray-300"><?php echo trad('notifications',$_SESSION["language"]);?></div>
+                </div>
+            </div>
         </div>
         <!-- END: Notifications -->
         <!-- BEGIN: Account Menu -->
         <div class="account-menu intro-x dropdown w-8 h-8">
-            
+            <div class="dropdown-toggle w-8 h-8 rounded-pill overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+                <?php
+                    $recipes=select_image_profil_by_id_user($_SESSION['ID']);
+                    if(!empty($recipes)){?>
+                        <img alt="Icewall Bootstrap HTML Admin Template" src="images/profil/<?php echo $recipes[0][0];?>">
+                    <?php } else {?>
+                        <img alt="Icewall Bootstrap HTML Admin Template" src="images/profil/defaut.jpg">
+                    <?php }
+                ?>
+            </div>
+            <div class="dropdown-menu w-56">
+                <ul class="dropdown-content bg-theme-11 dark-bg-dark-6">
+                    <li class="p-2">
+                        <div class="fw-medium text-white"><?php echo $_SESSION["prenom_nom"]; ?></div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider border-theme-12 dark-border-dark-3">
+                    </li>
+                    <li>
+                        <a href="profil.php" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="user" class="w-4 h-4 me-2"></i> <?php echo trad('profile',$_SESSION["language"]);?> </a>
+                    </li>
+                    <!-- <li>
+                        <a href="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="lock" class="w-4 h-4 me-2"></i> Reset Password </a>
+                    </li> -->
+                    <!-- <li>
+                        <a href="" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="help-circle" class="w-4 h-4 me-2"></i> Help </a>
+                    </li> -->
+                    <li>
+                        <hr class="dropdown-divider border-theme-12 dark-border-dark-3">
+                    </li>
+                    <li>
+                        <a href="deconnexion.php" class="dropdown-item text-white bg-theme-1-hover dark-bg-dark-3-hover"> <i data-feather="toggle-right" class="w-4 h-4 me-2"></i> <?php echo trad('logout',$_SESSION["language"]);?> </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!-- END: Account Menu -->
     </div>
@@ -39,7 +78,14 @@
     <div class="wrapper-box">
         <!-- BEGIN: Side Menu -->
         <nav class="side-nav">
-            
+            <ul>
+                <li>
+                    <a href="new_order.php" class="side-menu">
+                        <div class="side-menu__icon"> <i data-feather="watch"></i> </div>
+                        <div class="side-menu__title"> Dossier en attente de planification </div>
+                    </a>
+                </li>
+            </ul>
         </nav>
         <!-- END: Side Menu -->
         <!-- BEGIN: Content -->

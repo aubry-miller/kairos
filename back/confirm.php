@@ -19,7 +19,7 @@ if($_GET['submit'] == 'Yes'){
 
         update_piece_statut($piece_id, 'confirmed');
     }
-    update_order_statut($_GET['piece_number'], 'confirmed');
+    update_order_statut($_GET['millnet_id'], 'confirmed');
 
 } else if($_GET['submit'] == 'No'){
     include('../sql/delete.php');
