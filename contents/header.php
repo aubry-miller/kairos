@@ -19,7 +19,7 @@
         </a>
         <!-- END: Logo -->
         <!-- BEGIN: Breadcrumb-->
-        <div class="-intro-x breadcrumb me-auto"> <a href="homepage.php">Kairos</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i> <a href="" class="breadcrumb--active"> </a> </div>
+        <div class="-intro-x breadcrumb me-auto"> <a href="homepage.php">Kairos</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i> <a href="" class="breadcrumb--active"> </a> <?php echo $title;?></div>
         <!-- END: Breadcrumb -->
         
         <!-- BEGIN: Notifications -->
@@ -36,7 +36,7 @@
         <div class="account-menu intro-x dropdown w-8 h-8">
             <div class="dropdown-toggle w-8 h-8 rounded-pill overflow-hidden shadow-lg image-fit zoom-in" role="button" aria-expanded="false" data-bs-toggle="dropdown">
                 <?php
-                    $recipes=select_image_profil_by_id_user($_SESSION['ID']);
+                    $recipes=select_image_profil_by_id_user($_SESSION['user_id']);
                     if(!empty($recipes)){?>
                         <img alt="Icewall Bootstrap HTML Admin Template" src="images/profil/<?php echo $recipes[0][0];?>">
                     <?php } else {?>
@@ -80,9 +80,20 @@
         <nav class="side-nav">
             <ul>
                 <li>
-                    <a href="new_order.php" class="side-menu">
+                    <a href="new_order.php" class="side-menu <?php if(
+                                str_contains($_SERVER['REQUEST_URI'],'/new_order.php')
+                                ){ echo 'side-menu--active';}?>">
                         <div class="side-menu__icon"> <i data-feather="watch"></i> </div>
-                        <div class="side-menu__title"> Dossier en attente de planification </div>
+                        <div class="side-menu__title"><?php echo trad('orders_awaiting_planning',$_SESSION["language"]);?></div>
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="users.php" class="side-menu <?php if(
+                                str_contains($_SERVER['REQUEST_URI'],'/users.php')
+                                ){ echo 'side-menu--active';}?>">
+                        <div class="side-menu__icon"> <i data-feather="user-plus"></i> </div>
+                        <div class="side-menu__title"><?php echo trad('users_management',$_SESSION["language"]);?></div>
                     </a>
                 </li>
             </ul>

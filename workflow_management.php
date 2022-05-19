@@ -34,11 +34,8 @@ session_start();
                 else
                         $url = "http"; 
                         
-                // Ajoutez // à l'URL.
                 $url .= "://";        
-                // Ajoutez l'hôte (nom de domaine, ip) à l'URL.
                 $url .= $_SERVER['HTTP_HOST']; 
-                // Ajouter l'emplacement de la ressource demandée à l'URL
 
                 if(strpos($_SERVER['REQUEST_URI'],'?product=' ) != false){
                         $_SERVER['REQUEST_URI']=substr($_SERVER['REQUEST_URI'],0,strpos($_SERVER['REQUEST_URI'],'?product=' ));
@@ -61,16 +58,14 @@ session_start();
                                 <?php
                                 $label= get_product_type_label_by_id($_GET['product']);
                                 ?>
-                                <h4 class="fs-xl fw-medium lh-1 mt-3 mb-12">Workflow du produit : <?php echo $label;?></h4>
+                                <h4 class="fs-xl fw-medium lh-1 mt-3 mb-12"><?php echo trad('product_worflow:',$_SESSION["language"]).' '. $label;?></h4>
                                 <?php
                                 $steps=get_steps_by_flow_id(get_flow_id_by_product_id($_GET['product']));
                                 foreach($steps as $key => $step){
                                         echo '<b>'.$step['stp_label'].'<b>';
                                         if ($key !== array_key_last($steps)) {
-                                                echo ' => ';
+                                                echo ' &#x279C; ';
                                         }
-
-                                        // echo $step['stp_label'].' => ';
                                 }
                                 ?>
                         </div>

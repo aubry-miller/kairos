@@ -3,6 +3,7 @@ include('sql/connect.php');
 include('sql/get.php');
 include('sql/engine.php');
 session_start();
+$title='Homepage';
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +16,7 @@ session_start();
         <meta name="description" content="Icewall admin is super flexible, powerful, clean & modern responsive bootstrap admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Icewall Admin Template, dashboard template, flat admin template, responsive admin template, web app">
         <meta name="author" content="LEFT4CODE">
-        <title>test</title>
+        <title>Homepage</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="dist/css/app.css" />
         <!-- END: CSS Assets-->

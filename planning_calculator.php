@@ -45,10 +45,9 @@ if($plan_result['status'] == false){
     echo $plan_result['reasons'];
     delete_order($millnet_id);
 
-    //TODO Demander si la personne désir avoir le meilleur délai possible pour lancer, ou non, son calcul.
     ?>
     <br>
-    Voulez-vous connaitre à quelle date la fabrication peut-être réalisée ?
+    Do you want to know when the production can be done?
     <form action="back/best_deadline.php" method="get">
         <?php
         if(isset($_GET['temp_id'])){
@@ -96,8 +95,7 @@ else {
         
         $steps=get_steps_by_flow_id($plan_result['flow_id']);
 
-        foreach($steps as $step){ //$plan_result[$piece_id] as $result
-            // var_dump($step);
+        foreach($steps as $step){ 
             echo '<br>'.strtoupper($step['stp_label']).'<br>';
             if(isset($plan_result[$piece_id][$step['stp_label']]['date']) && $plan_result[$piece_id][$step['stp_label']]['date'] != null){
                 echo 'Date => '.$plan_result[$piece_id][$step['stp_label']]['date'].'<br>';
@@ -125,7 +123,7 @@ else {
 
     ?>
     <br>
-    Confirmer la commande ?
+    Confirm order ?
     <form action="back/confirm.php" method="get">
         <input type="hidden" name="piece_number" value="<?php echo $piece_number;?>">
         <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">

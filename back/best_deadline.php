@@ -10,7 +10,7 @@ if($_GET['submit'] == 'No'){
     header("location:../new_order.php");
 } else {
     include('../sql/get.php');
-    //Il faut récupérer les informations de la commande temp avec son ID
+    // We need to get the information of the temp command with its ID
 
 
     $session_key=random_int(0,999999999);
@@ -21,9 +21,9 @@ if($_GET['submit'] == 'No'){
     $order=select_temp_orders_by_id($_GET['temp_id']);
 
     $millnet_id=$order['temp_millnet_id'].'-'.$order['temp_millnet_part_id'];
-    // On va chercher le workflow qui correspond au type de produit
+    // We will look for the workflow that corresponds to the type of product
     $product_type_id=get_product_type_id_by_label($order['temp_product_type']);
-    // On va chercher les step du workflow
+    // We will search for the workflow steps
     $steps=get_steps_by_flow_id($product_type_id);
 
 
@@ -31,6 +31,6 @@ if($_GET['submit'] == 'No'){
 
     $proposition_plan=plan($session_key,$order,$millnet_id,$steps,$step_date);
 
-    echo 'La fabrication est possible pour le '.$proposition_plan['deadline'];
+    echo 'Manufacturing is possible for the '.$proposition_plan['deadline'];
     
 }

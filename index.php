@@ -9,19 +9,19 @@ if (isset($_POST["valider"])) {
     $user = get_user_by_pseudo_and_password($pseudo, $pass_crypt);
 if (count($user) > 0) {
     session_start();
-    $_SESSION["ID"] = $user[0]["us_id"];
+    $_SESSION["user_id"] = $user[0]["us_id"];
     $_SESSION["prenom_nom"] = ucfirst(strtolower($user[0]["us_firstname"])) ." "  .  strtoupper($user[0]["us_name"]);
     $_SESSION["mail"] = strtolower($user[0]["us_firstname"]).'.'.strtolower($user[0]["us_name"]).'@millergraphics.com';
     $_SESSION["pseudo"] = $pseudo;
     $_SESSION["language"] = $user[0]["us_language"];
-    $_SESSION['mode']=$users[0]['us_screen_mode'];  
-
+    $_SESSION['mode']=$user[0]['us_screen_mode'];  
+    $_SESSION['homepage']=$user[0]['us_homepage'];  
 
     include("sql/set.php");
 
-    header("location:homepage.php");
+    header("location:".$_SESSION['homepage']);
 } else
-    $erreur = "Mauvais login ou mot de passe!";
+    $erreur = "Wrong login or password!";
 }
 ?>
  

@@ -44,8 +44,6 @@ function test_availability_mandrel($possibily,$mandrel_ids,$date_with_margin){
                 $response['mandrel_id']=$mandrel_id['mn_id'];
                 $response['date']=$dt;
                 return $response;
-            } else {
-                // echo 'indispo le '.$dt.'<br>';
             }
             $j++;
         }
@@ -122,11 +120,9 @@ function dateDiff($date1, $date2){
 
 function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$deadline_task,$i,$minimum_time,$now,$session_key){
     
-    // echo '<br>'.$steps[$i]['stp_label'].' => ';
     // We check if the step minimum time is differente than 0
     if($steps[$i]['stp_minimum_time'] != 0){
         // The step needs a mandrel
-        // echo ' minimum during '.$steps[$i]['stp_minimum_time'].' day(s),';
 
         //////////////////////////////////////////////////////////////////////////////////
         ////////////////////////// THE STEP REQUIRES A MANDREL ///////////////////////////
@@ -134,7 +130,6 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
 
         if($steps[$i]['stp_needs_mandrel'] == 1){
             // The step needs a mandrel
-            // echo ' needs a mandrel <br>';
 
             // We select the mandrels id
             $mandrel_ids = get_mandrel_id_by_specifications($mandrel_diameter, $form,$sleeve_length,$steps[$i]['stp_sector_id']);
@@ -161,15 +156,12 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                 $day_number = DAYSWEEK[date("w",$timestamp)];
                 // echo 'day =>'.$day_number.'<br>';
                 if($day_number==1 || $day_number == 7){
-                    // echo 'date planned =>'.$other_date.' On regarde les dispos à j+1 <br>';
                     
                     foreach($mandrel_ids as $mandrel_id){
-                        //regarder dans planning task si ce jour (n+1) le mandrel avec cet id est occupé ou non
+                        // Look in planning task if this day (n+1) the mandrel with this id is occupied or not
                         $dispo=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
                         if($dispo == 0){
-                            // echo 'dispo'.$tomorrow_string.' <br>';
-                            // echo 'On doit vérifier si le délais est toujours respecté';
-                            //si delais ok on continu la programmation
+                            // If time ok we continue the programming
                             $interval = $now->diff($tomorrow);
                             $available_time= $interval->format('%a');
 
@@ -177,7 +169,7 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                             $available_sign= $interval->format('%R');
                             
                             // We check if the delay is sufficient
-                            if($available_time >= $minimum_time && $available_sign=='+'){
+                            if($available_time >= $minimum_time && $available_sign=='+'){ 
                                 // echo 'Délai ok <br>';
                             } else {
                                 // echo 'délai KO, on continu <br>';
@@ -189,14 +181,11 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                     }
 
                 } else if ($day_number==2 || $day_number == 3 || $day_number == 4){
-                    // echo 'date planned =>'.$other_date.' On regarde les dispos à j+1 et j-1 <br>';
                     foreach($mandrel_ids as $mandrel_id){
-                        //regarder dans planning task si ce jour (n+-1) le mandrel avec cet id est occupé ou non
+                        //  Look in planning task if this day (n+-1) the mandrel with this id is occupied or not
                         $dispo_tomorrow=count_task_at_date_with_mandrel_id($tomorrow_string, $mandrel_id['mn_id']);
                         if($dispo_tomorrow == 0){
-                            // echo 'dispo le '.$tomorrow_string.' <br>';
-                            // echo 'On doit vérifier si le délais est toujours respecté';
-                            //si delais ok on continu la programmation
+                            // If time ok we continue the programming
                             $interval = $now->diff($tomorrow);
                             $available_time= $interval->format('%a');
 
@@ -205,18 +194,13 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                             
                             // We check if the delay is sufficient
                             if($available_time >= $minimum_time && $available_sign=='+'){
-                                // echo 'Délai ok <br>';
                             } else {
                                 // echo 'délai KO, on continu <br>';
                             }
                         } else {
-                            // echo 'non dispo le '.$tomorrow_string.' <br>';
-
                             $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
                             if($dispo_yesterday == 0){
-                                // echo 'dispo le '.$yesterday_string.' <br>';
-                                // echo 'On doit vérifier si le délais est toujours respecté';
-                                //si delais ok on continu la programmation
+                                // If time ok we continue the programming
                                 $interval = $now->diff($yesterday);
                                 $available_time= $interval->format('%a');
 
@@ -238,16 +222,13 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
                         
                     }
                 } else if ($day_number=5 || $day_number == 6){
-                    // echo 'date planned =>'.$other_date.' On regarde les dispos à j-1 <br>';
 
                     foreach($mandrel_ids as $mandrel_id){
-                        //regarder dans planning task si ce jour (n-1) le mandrel avec cet id est occupé ou non
+                        // Look in planning task if this day (n-1) the mandrel with this id is busy or not
                         
                         $dispo_yesterday=count_task_at_date_with_mandrel_id($yesterday_string, $mandrel_id['mn_id']);
                         if($dispo_yesterday == 0){
-                            // echo 'dispo le '.$yesterday_string.' <br>';
-                            // echo 'On doit vérifier si le délais est toujours respecté';
-                            //si delais ok on continu la programmation
+                            // If time ok we continue the programming
                             $interval = $now->diff($yesterday);
                             $available_time= $interval->format('%a');
 
@@ -299,9 +280,7 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
             if ($response['date'] == false){
                 // We return the fact that the order is not feasible in this period due to lack of mandrel
                 return 'Impossible : no mandrel available';
-            } else {
-                // echo 'Mandrel available the '.$response['date'].'<br>';
-                
+            } else {                
                 $_SESSION[$session_key]['mandrel_id']=$response['mandrel_id'];
                 return $response['date'];
             }
@@ -317,10 +296,6 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
         }
         
     }
-    // echo ' minimum during '.$steps[$i]['stp_minimum_time'].' day(s),';
-    // echo ' does not need a mandrel';
-    
-    // echo '<br>';
 
     $minimum_time=$minimum_time-$steps[$i]['stp_minimum_time'];
 }
@@ -338,28 +313,23 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_key,$duration,$sleeve_length){
-    //on retourne chercher les caractéristique du mandrel
+    // We go back to find the characteristics of the mandrel
     $mandrel=get_mandrel_by_id($_SESSION[$session_key]['mandrel_id']);
-    // on cherche les machines de l'étape correspondants aux critères
+    // We look for the machines of the stage corresponding to the criterian return to look for the characteristics of the mandrel
     $machines=select_machines_by_sector_diameter_and_length($sector_id, $mandrel_diameter, $mandrel['mn_length']);
 
-    // echo 'Les machines compatibles sont : <br>';
     if($machines != []){
         foreach($machines as $machine){
                                             
             // Depending on the type of lining, the right machine is chosen
             if($sector_id !='2' && $sector_id !='6' || ($machine['mc_id'] == 10 && $sector_id =='2') || ($machine['mc_id'] == 11 && $sector_id =='6')){
                 
-                //vérifier si la machine n'est pas arrété (machine_stop)
+                // Check if the machine is not stopped (machine_stop)
                 $machine_stop=verification_machine_stop_at_date($machine['mc_id'],$date);
                 if($machine_stop == []){
                     // check si des heures sup sont prévues dans le secteur ce jour TODO
-
-
-
-                    // echo $machine['mc_label'].'<br> jobs du jour: ' ;
                 
-                    //vérifier la disponibilité de la machine ce jour
+                    // Check the availability of the machine this day
                     $day_machine_jobs= select_job_duration_by_date_and_machine_id($date,$machine['mc_id']);
                     $machine_day_charge=0;
                     foreach($day_machine_jobs as $day_machine_job){
@@ -368,7 +338,6 @@ function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_
                         $machine_day_charge=$machine_day_charge+$day_machine_hours*60+$day_machine_minutes;
 
                     }
-                    // echo ' La charge du jour est de '.$machine_day_charge.' minutes<br>';
 
                     // The machine capacity is converted into minutes to facilitate the comparison
                     $machine_capacity_hours=date_create($machine['mc_daily_hourly_capacity'])->format('H');
@@ -390,7 +359,7 @@ function check_machine_availability($sector_id,$date,$mandrel_diameter,$session_
 
         }
     } else {
-        // echo 'Pas de machine en production correspondant aux critères <br>';
+        // No machine in production corresponding to the criteria, we return the impossibility of manufacturing
         return false;
     }
 }
@@ -504,8 +473,8 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                     ///////////////////////////// STAFF AVAILABILITY CHECK ////////////////////////////
                     //////////////////////////////////// Beggining ////////////////////////////////////
 
-                    //verif dispo personnel le $result[$piece_number][$i] à l'atelier $steps[$i]['stp_sector_id']
-                    //recuperation du nombre du temps dispo par personne du secteur à la date
+                    // Check availability of personnel on  $result[$piece_number][$i] at the workshop  $steps[$i]['stp_sector_id']
+                    // Recovery of the number of available time per person of the sector at the date
 
                     //select operateur du secteur
                     $operators=select_operators_by_sector($steps[$i]['stp_sector_id']);
@@ -528,7 +497,6 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                     // Task duration
                     $duration=calculate_task_duration($steps[$i]['stp_id'],$mandrel_diameter,$sleeve_length);
                     $wip=strstr($duration, '.');
-                    // echo $wip;
                     if(strlen($wip) == 1){
                         $wip='00';
                     }if(strlen($wip) == 2){
@@ -545,14 +513,13 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
                     $planning[$piece_id][$steps[$i]['stp_label']]['during']=$duration_time;
 
-                    //check si present ce jour dans la table absence
+                    // Check if present this day in the absence table
                     foreach($operators as $operator){
                         $presence=verification_operator_presence_at_date($operator['us_id'],$result[$piece_number][$i]);
                         $operator_default_time=select_operator_default_time_by_id($operator['us_id']);
 
                         if($presence == []){
-                            // echo 'opérateur présent';
-                            //check si present dans overtime
+                            // Check if present this day in the overtime table
                             $overtime=verification_operator_overtime_at_date($operator['us_id'],$result[$piece_number][$i]);
                             if($overtime == []){
                                 $additional_time=0;
@@ -562,7 +529,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
                             $operation_production_time= $operator_default_time[0]['otd_production_time']+$additional_time;
 
-                            //travail attribué ce jour
+                            // Work assigned at this day
                             $day_jobs= select_job_duration_by_date_and_user_id($result[$piece_number][$i],$operator['us_id']);
 
                             $dispo_time_hours=floor($operation_production_time);
@@ -580,8 +547,6 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                 $planning[$piece_id][$steps[$i]['stp_label']]['date']=$result[$piece_number][$i];//TODO changer label en id
                                 $planning[$piece_id][$steps[$i]['stp_label']]['operator']=$operator['us_id'];//TODO changer label en id
                                 
-                                
-                                // echo '<br>l\'opérateur a le temps de fabriquer, voir la dispo machine<br>';
 
                                 ///////////////////////////////////////////////////////////////////////////////////
                                 //////////////////////////// MACHINE AVAILABILITY CHECK ///////////////////////////
@@ -601,7 +566,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         $d = strtotime($result[$piece_number][$i]);
                                         $deadline_task= date("Y-m-d", mktime(0,0,0,date("m", $d),date("d", $d)-1,date("Y", $d)));
                                     }
-                                    //Enregistrer les tash dans planning tash
+                                    // Save the tasks in planning task
                                     if(strpos($steps[$i]['stp_id'], 'stock') == false){
                                         if(!isset($planning[$piece_id][$steps[$i]['stp_label']]['mandrel_id'])){
                                             $mandrel_id=null;               
@@ -611,10 +576,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         
                                         new_planning_task($piece_id, $steps[$i]['stp_id'], $planning[$piece_id][$steps[$i]['stp_label']]['during'], $result[$piece_number][$i], $planning[$piece_id][$steps[$i]['stp_label']]['machine'], $planning[$piece_id][$steps[$i]['stp_label']]['operator'],  $mandrel_id);//TODO changer la durée
                                     }
-                                    // echo '<br>';
-                                // } else {
-                                //     echo 'Pas de machine en production correspondant aux critères <br>';
-                                // }
+
                                 ///////////////////////////////////////////////////////////////////////////////////
                                 //////////////////////////// MACHINE AVAILABILITY CHECK ///////////////////////////
                                 /////////////////////////////////////// End ///////////////////////////////////////
@@ -624,15 +586,14 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
 
                             } else{
-                                // echo '<br>opérateur non dispo, on continu la boucle<br>';
+                                // echo '<br>opérateur non dispo, on continu la boucle<br>';//TODO
                             }
                             
 
                             
 
                         } else{
-                            // echo 'tester si absent la journée ou partiellement';
-                            // si la date du début contien 00:00:00 et la date de fin contient 23:59:59 alors l'opérateur est absent la journée
+                            // If the start date contains 00:00:00 and the end date contains 23:59:59 then the operator is absent during the day
                            
                             if( (strpos($presence[0]['oa_start_hour_date'], '00:00:00') !== false) && (strpos($presence[0]['oa_end_hour_date'], '23:59:59')!== false)){
                                 //TODO
@@ -706,14 +667,12 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
 
 
     function plan($session_key,$order,$millnet_id,$steps,$step_date){
-        // creation de la commande pour enregistrer la plannification des tâches ????????????
         $planning=null;
-        // A chaque étape (dans l'ordre)
+        // At each step (in order)
         $nb_step=0;
         foreach($steps as $step){
             $nb_step++;
-            // echo '<hr>'.$step['stp_label'].'<br>';
-            //Pour chaque pièce
+            // For each piece
             for($n=1;$n<=$order['temp_pieces_number'];$n++){
                 
                 // We build the piece ID from the Millnet number and the number of pieces
@@ -727,11 +686,10 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                 }
                 // echo '<br>'.$piece_id. ' => '.$step['stp_label'].'<br>';
     
-                //selection du porteur correspondant aux caractéritiques techniques si l'étape en necessite un
+                // Selection of the carrier corresponding to the technical characteristics if the stage requires one
                 if($step['stp_needs_mandrel']== 1){
                     $mandrels=get_mandrel_id_by_specifications($order['temp_mandrel_diameter'], $order['temp_mandrel_form'],$order['temp_sleeve_length'],$step['stp_sector_id']);
-                    // var_dump($mandrels);
-                    
+
                     $test_mandrel=0;
                     while($test_mandrel==0){
                         $test_day=0;
@@ -747,30 +705,25 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                         
                             $day_number = DAYSWEEK[date("w",$timestamp)];
                             if($day_number!=1 && $day_number != 7){
-                                //On n'est pas un samedi ou un dimanche donc la nouvelle date a tester est la bonne
+                                // It is not a Saturday or a Sunday so the new date to test is the right one
                                 $test_day=1;
-                                // echo '<br>semaine<br>';
                             } else{
-                                //Sinon on continu a boucler pour tester un autre jour
+                                // Otherwise we continue to loop to test another day
                                 $test_day=0;
-                                // echo '<br>week-end<br>';
                             }
                         }
                         
                         foreach($mandrels as $mandrel){
                             $dispo=count_task_at_date_with_mandrel_id($step_date,$mandrel['mn_id']);
                             if($dispo == 0){
-                                //mandrel dispo
+                                //mandrel available
     
                                 $_SESSION[$session_key]['mandrel_id']=$mandrel['mn_id'];
-                                // echo'Porteur dispo<br>';
-                                
-                                
+
                                 $operators=select_operators_by_sector($step['stp_sector_id']);
     
                                 $duration=calculate_task_duration($step['stp_id'],$order['temp_mandrel_diameter'],$order['temp_sleeve_length']);
                                 $wip=strstr($duration, '.');
-                                // echo $wip;
                                 if(strlen($wip) == 1){
                                     $wip='00';
                                 }if(strlen($wip) == 2){
@@ -790,8 +743,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                     $presence=verification_operator_presence_at_date($operator['us_id'],$step_date);
                                     $operator_default_time=select_operator_default_time_by_id($operator['us_id']);
                                     if($presence == []){
-                                        // echo 'opérateur présent';
-                                        //check si present dans overtime
+                                        // Check if present in overtime
                                         $overtime=verification_operator_overtime_at_date($operator['us_id'],$step_date);
                                         if($overtime == []){
                                             $additional_time=0;
@@ -801,7 +753,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         $operation_production_time= $operator_default_time[0]['otd_production_time']+$additional_time;
     
     
-                                        //travail attribué ce jour
+                                        // Work assigned this day
                                         $day_jobs= select_job_duration_by_date_and_user_id($step_date,$operator['us_id']);
     
                                         $dispo_time_hours=floor($operation_production_time);
@@ -816,12 +768,8 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                         }
                                         if(($duration+$dispo_time)>=0){
                                             $planning[$piece_id][$step['stp_label']]['date']=$step_date;//TODO changer label en id
-                                            $planning[$piece_id][$step['stp_label']]['operator']=$operator['us_id'];//TODO changer label en id
+                                            $planning[$piece_id][$step['stp_label']]['operator']=$operator['us_id'];//TODO changer label en id    
                                             
-                                            // echo '<br>l\'opérateur a le temps de fabriquer, voir la dispo machine<br>';
-    
-                                            
-                                            //Test Machine $sector_id,$date,$mandrel_diameter,$session_key,$duration,$sleeve_length
                                             $verif_machine=check_machine_availability($step['stp_sector_id'],$step_date,$order['temp_mandrel_diameter'],$session_key,$duration,$order['temp_sleeve_length']);
                                             
                                             if($verif_machine != false){
@@ -834,7 +782,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                             }
     
                                             
-                                            //Enregistrer les tash dans planning tash
+                                            // Save the tasks in planning task
                                             if(strpos($step['stp_id'], 'stock') == false){
                                                 if(!isset($planning[$piece_id][$step['stp_label']]['mandrel_id'])){
                                                     $mandrel_id=null;               
@@ -842,27 +790,25 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                                     $mandrel_id=$planning[$piece_id][$step['stp_label']]['mandrel_id'];
                                                 }
                                                 
-                                                // new_planning_task($piece_id, $step['stp_id'], $duration_time, $step_date, $planning[$piece_id][$step['stp_label']]['machine'], $planning[$piece_id][$step['stp_label']]['operator'],  $mandrel_id);
+                                                new_planning_task($piece_id, $step['stp_id'], $duration_time, $step_date, $planning[$piece_id][$step['stp_label']]['machine'], $planning[$piece_id][$step['stp_label']]['operator'],  $mandrel_id);
                                             }
                                         
                                         
                                         
-                                        } else {
-                                            // echo '<br>opérateur non dispo, on continu la boucle<br>';
                                         }
     
     
     
     
                                     } else{
-                                        // echo 'opérateur absent';
+                                        // echo 'opérateur absent'; //TODO
                                     }
                                 }
     
                                 $test_mandrel=1;
                                 break;
                             } else{
-                                // echo '<br>Porteur indispo<br>';
+                                // echo '<br>Porteur indispo<br>';//TODO
                             }
                         }
                         
@@ -878,16 +824,13 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                         $step_date=$last_step_string;
                     }
     
-    
-                    // echo "Pas besoin d'attribuer un porteur<br>";
-                    // var_dump($mandrels);
                     $test=0;
                     while($test==0){
-                        //select operateur du secteur
+                        // Select operator of the sector
                         $operators=select_operators_by_sector($step['stp_sector_id']);
                         foreach($operators as $operator){
-                            // $presence=verification_operator_presence_at_date($operator['us_id'],$date);
-                            // $operator_default_time=select_operator_default_time_by_id($operator['us_id']);
+                            // $presence=verification_operator_presence_at_date($operator['us_id'],$date); //TODO
+                            // $operator_default_time=select_operator_default_time_by_id($operator['us_id']); //TODO
     
                         
                         }
