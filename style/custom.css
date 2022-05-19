@@ -3,6 +3,10 @@
     display: none;
 }
 
+.ta-center{
+    text-align:center;
+}
+
 .fond_inline,
 .inline{
     display: inline-block;

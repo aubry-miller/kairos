@@ -546,3 +546,39 @@ function select_image_profil_by_id_user($id){
     return $result; 
 
  }
+
+ function select_all_users_their_rights_and_their_function(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from user, function,rights where fc_id=us_function_id and rg_user=us_id order by us_status , us_name");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_one_user_his_rights_and_his_function($id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from user, function,rights where us_id=? and fc_id=us_function_id and rg_user=us_id order by us_name ASC");
+    $sqlQuery->execute(array($id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result[0]; 
+
+ }
+
+ function select_all_functions(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from function order by fc_label ASC");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }

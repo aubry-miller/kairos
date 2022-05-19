@@ -43,3 +43,19 @@ function update_mode_affichage($id_user, $mode){
     $upd->execute(array($mode, $id_user));
     $pdo=null;
 }
+
+function update_user($user_id, $firstname, $name, $login, $language, $function, $homepage, $status){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update user SET us_firstname=?, us_name=?, us_login=?, us_language=?, us_function_id=?, us_homepage=?, us_status=? WHERE us_id=?");
+    $upd->execute(array($firstname, $name, $login, $language, $function, $homepage, $status, $user_id));
+    $pdo=null;
+}
+
+function update_rights($user_id ,$rg_csr_right, $rg_task_plan_right, $rg_global_plan_right, $rg_mechanical_manager_right, $rg_site_management_right){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update rights SET rg_csr_right=?, rg_task_plan_right=?, rg_global_plan_right=?, rg_mechanical_manager_right=?, rg_site_management_right=? WHERE rg_user=?");
+    $upd->execute(array($rg_csr_right, $rg_task_plan_right, $rg_global_plan_right, $rg_mechanical_manager_right, $rg_site_management_right, $user_id));
+    $pdo=null;
+}

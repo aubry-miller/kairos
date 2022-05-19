@@ -24,7 +24,7 @@ if(isset($_POST["new_photo_profil"])) {
     // Check file size
     if ($_FILES["fileToUpload"]["size"] > 5000000) {
         $erreur = trad('sorry_file_too_big',$_SESSION["language"]);
-    $uploadOk = 0;
+        $uploadOk = 0;
     }
 
     // Allow certain file formats
@@ -42,8 +42,7 @@ if(isset($_POST["new_photo_profil"])) {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 
     include("sql/set.php");
-    //On joue la requete
-    new_image_profil($random.'_'.$_FILES["fileToUpload"]["name"], $_SESSION['ID']);
+    new_image_profil($random.'_'.$_FILES["fileToUpload"]["name"], $_SESSION['user_id']);
 
 
 
@@ -57,7 +56,7 @@ if(isset($_POST["new_photo_profil"])) {
 
 
 if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
-    $titre=trad('profile',$_SESSION["language"]);?>
+    $title=trad('profile',$_SESSION["language"]);?>
     <!doctype html>
     <html lang="fr" class="<?php echo $_SESSION['mode'];?>">
     <!-- BEGIN: Head -->
@@ -72,12 +71,11 @@ if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
             <link rel="stylesheet" href="dist/css/app.css" />
             <link rel="stylesheet" href="style/custom.css" />
         <!-- END: CSS Assets-->
-        <title><?php echo $titre;?></title>
+        <title><?php echo $title;?></title>
     </head>
     <!-- END: Head -->
     <body class="main">
         <?php 
-        $page=$titre;
         include ("contents/header.php");?>
         <?php if(isset($erreur)){
             ?>
@@ -87,7 +85,7 @@ if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
         ?>
         <div class="intro-y d-flex flex-column flex-sm-row align-items-center mt-8">
             <h2 class="fs-lg fw-medium me-auto">
-                <?php echo $titre; ?>
+                <?php echo $title; ?>
             </h2>
         </div>
         <div class="row gap-y-6 mt-5">
@@ -98,7 +96,7 @@ if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
                             <h4 class="fs-xl fw-medium lh-1 mt-3"><?php echo trad('profile_picture_choice',$_SESSION["language"]);?></h4>
                             <div class="mt-6">
                                 <?php
-                                $results=select_image_profil_by_id_user($_SESSION['ID']);
+                                $results=select_image_profil_by_id_user($_SESSION['user_id']);
                                 ?>
                                 <div class="inline ml-12">
                                     <input class="inline vert-align_center" type="radio" name="img" value="defaut" required <?php if(empty($results)){ echo "checked";}?>>
@@ -107,7 +105,7 @@ if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
                                     </div>
                                 </div>
                                 <?php
-                                $recipes = select_all_photo_profil_by_id_user($_SESSION['ID']);
+                                $recipes = select_all_photo_profil_by_id_user($_SESSION['user_id']);
 
                                 foreach($recipes as $recipe){?>
                                     <div class="inline ml-12">
@@ -215,7 +213,7 @@ if(isset($_SESSION["prenom_nom"])  && $_SESSION["connecter"] = "yes"){
     </body>
     </html>
 <?php
-// si la personne n'est pas authentifiée on la redirige vers la page de connexion
+// if the person is not authenticated we redirect them to the login page
 } else {
     header("location:index.php");
 }
