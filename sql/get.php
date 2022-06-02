@@ -582,3 +582,39 @@ function select_image_profil_by_id_user($id){
     return $result; 
 
  }
+
+ function select_jobs_by_day_and_step_id($date,$step){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from planning_task, piece, rubber where pc_rubber_id=rb_id and pt_piece_id=pc_id and pt_planned_start_date like ? and pt_step_id=? order by pt_planned_start_date ASC");
+    $sqlQuery->execute(array($date.'%',$step));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_planning_task_by_plan_id($id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from planning_task where pt_id=?");
+    $sqlQuery->execute(array($id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result[0]; 
+
+ }
+
+function get_piece_informations_by_id($id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from piece, orders, notch, rubber, fiber where pc_order_id=od_millnet_id and pc_notch_id= nt_id and pc_rubber_id=rb_id and pc_fiber_id=fb_id and pc_id=?");
+    $sqlQuery->execute(array($id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result[0]; 
+
+ }

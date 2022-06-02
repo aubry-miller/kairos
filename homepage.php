@@ -11,7 +11,7 @@ $title='Homepage';
     <!-- BEGIN: Head -->
     <head>
         <meta charset="utf-8">
-        <link href="images/logo.svg" rel="shortcut icon">
+        <!--<link href="images/logo.svg" rel="shortcut icon">-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Icewall admin is super flexible, powerful, clean & modern responsive bootstrap admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Icewall Admin Template, dashboard template, flat admin template, responsive admin template, web app">
