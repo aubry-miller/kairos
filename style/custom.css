@@ -168,6 +168,11 @@
     border-radius: 5px;
 }
 
+.plan_table:hover {
+    cursor:pointer;
+    background:rgba(100,100,200,0.2);
+}
+
 .flag{
     width: 50px;
 }
@@ -178,6 +183,39 @@
 
 .ck-editor>label{
     display: none !important;
+}
+
+#chronotime{
+    display:block;
+    width: 400px;
+    margin: auto;
+    text-align: center;
+    font-size: 400%;
+    border: solid 6px red;
+    border-radius: 20px;
+}
+
+#chronoForm{
+    display: block;
+    margin: auto;
+    text-align: center;
+    font-size: 300%;
+}
+
+#chronoForm input[type="button"]{
+    background: transparent;
+}
+
+.list_marged_label{
+    font-weight:bold;
+    display:inline-block;
+    width:175px;
+    text-align:right;
+    padding-right:3px;
+}
+
+.list_marged_content{
+    display:inline-block;
 }
 
 @media screen and (max-width: 700px){

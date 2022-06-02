@@ -1,8 +1,16 @@
+<?php
+if(!isset($_SESSION['prenom_nom'])){
+    session_destroy();
+    header("location:index.php");
+}
+?>
+
+
 <!-- BEGIN: Mobile Menu -->
 <div class="mobile-menu d-md-none">
     <div class="mobile-menu-bar">
         <a href="accueil.php" class="d-flex me-auto">
-            <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png">
+            <!-- <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png"> -->
         </a>
         <a href="javascript:;" id="mobile-menu-toggler" class="mobile-menu-bar__toggler"> <i data-feather="bar-chart-2" class="w-8 h-8 text-white"></i> </a>
     </div>
@@ -14,7 +22,7 @@
     <div class="h-full d-flex align-items-center">
         <!-- BEGIN: Logo -->
         <a href="accueil.php" class="-intro-x d-none d-md-flex">
-            <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png">
+            <!-- <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png"> -->
             <span class="text-white fs-lg ms-3"> <span class="fw-medium">Kairos</span></span>
         </a>
         <!-- END: Logo -->
@@ -96,9 +104,19 @@
                         <div class="side-menu__title"><?php echo trad('users_management',$_SESSION["language"]);?></div>
                     </a>
                 </li>
+                <hr>
+                <li>
+                    <a href="lining_day_plan.php" class="side-menu <?php if(
+                                str_contains($_SERVER['REQUEST_URI'],'/lining_day_plan.php')
+                                ){ echo 'side-menu--active';}?>">
+                        <div class="side-menu__icon"> <i data-feather="calendar"></i> </div>
+                        <div class="side-menu__title"><?php echo trad('lining_day_plan',$_SESSION["language"]);?></div>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- END: Side Menu -->
         <!-- BEGIN: Content -->
         <div class="content">
 
+        

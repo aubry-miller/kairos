@@ -59,3 +59,35 @@ function update_rights($user_id ,$rg_csr_right, $rg_task_plan_right, $rg_global_
     $upd->execute(array($rg_csr_right, $rg_task_plan_right, $rg_global_plan_right, $rg_mechanical_manager_right, $rg_site_management_right, $user_id));
     $pdo=null;
 }
+
+function update_task_during($plan_id,$during,$status){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update planning_task SET pt_real_time=?, pt_status=? WHERE pt_id=?");
+    $upd->execute(array($during, $status,$plan_id));
+    $pdo=null;
+}
+
+function update_task_during_and_started_date($plan_id,$during,$status,$date){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update planning_task SET pt_real_time=?, pt_status=?, pt_real_start_date=? WHERE pt_id=?");
+    $upd->execute(array($during, $status, $date, $plan_id));
+    $pdo=null;
+}
+
+function update_task_during_and_finished_date($plan_id,$during,$status,$date){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update planning_task SET pt_real_time=?, pt_status=?, pt_real_end_date=? WHERE pt_id=?");
+    $upd->execute(array($during, $status, $date, $plan_id));
+    $pdo=null;
+}
+
+function add_real_material_consumption_to_planning_task_by_id($time, $id){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update planning_task SET pt_real_material_consumption=? WHERE pt_id=?");
+    $upd->execute(array($time, $id));
+    $pdo=null;
+}
