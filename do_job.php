@@ -194,7 +194,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
         
         
         ?>
-        <h4 class="fs-xl fw-medium lh-1 mt-3">Commande <?php echo $_GET['piece'];?></h4>
+        <h4 class="fs-xl fw-medium lh-1 mt-3"><?php echo trad('order',$_SESSION["language"]).' '.$_GET['piece'];?></h4>
         <div class="row gap-y-6 mt-5">
             <?php $response=get_piece_informations_by_id($_GET['piece']);?>
             <div class="intro-y col-12 col-lg-6">
@@ -203,7 +203,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Client : 
+                                <?php echo trad('customer',$_SESSION["language"]);?> :
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['od_customer_name'];?>
@@ -212,7 +212,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
 
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                CSR : 
+                            <?php echo trad('csr',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['od_csr_name'];?>
@@ -221,7 +221,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Type de gomme : 
+                                <?php echo trad('rubber',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['rb_label'];?>
@@ -230,7 +230,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Laize : 
+                                <?php echo trad('engraving_sleeve_length',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_sleeve_length'];?> mm
@@ -239,7 +239,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Table : 
+                                <?php echo trad('engraving_length',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_table_length'];?> mm
@@ -248,16 +248,21 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Décalage table : 
+                                <?php echo trad('engraving_sleeve_offset',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
-                                <?php echo $response['pc_sleeve_offset'];?> mm
+                                <?php 
+                                if($response['pc_sleeve_offset'] == 0 || $response['pc_sleeve_offset'] == null){
+                                    echo trad('centered',$_SESSION["language"]);
+                                } else {
+                                    echo trad('decentralized',$_SESSION["language"]);
+                                }?>
                             </div>
                         </li>
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                ø porteur : 
+                                <?php echo trad('mandrel_ø',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_mandrel_diameter'];?> mm
@@ -266,7 +271,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                ø rectif : 
+                                <?php echo trad('grinding_ø',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo round($response['pc_developement']/pi(),2);?> mm
@@ -275,7 +280,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Encoche : 
+                             <?php echo trad('notch',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['nt_label'];?>
@@ -284,7 +289,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Position des encoches : 
+                                <?php echo trad('notch_position',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_notch_position'];?>
@@ -293,7 +298,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Fibre : 
+                                <?php echo trad('fiber',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['fb_label'];?>
@@ -302,7 +307,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Épaisseur fibre : 
+                                <?php echo trad('fiber_thickness',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_fiber_thickness'];?> mm
@@ -311,7 +316,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Puce : 
+                                <?php echo trad('chip',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_chip'];?>
@@ -320,7 +325,7 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Épaulement : 
+                                <?php echo trad('cutback',$_SESSION["language"]);?> :  
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_cutback'];?>
@@ -329,14 +334,20 @@ $_SESSION['plan_id']=$_GET['plan_id'];
                         
                         <li style="width:100%;">
                             <div class="list_marged_label">
-                                Diamètre de l'épaulement : 
+                                <?php echo trad('cutback_diameter',$_SESSION["language"]);?> : 
                             </div>
                             <div class="list_marged_content">
                                 <?php echo $response['pc_cutback_diameter'];?> mm
                             </div>
                         </li>
+                        <?php if($response['nt_link'] != null && $response['nt_link'] != 0){?>
+                            <li style="width:40%; float:right; margin-top:-180px;">
+                                <img style="width: 100%; max-width:160px; float:right; "src="<?php echo $response['nt_link'];?>">
+                        </li>
+                    <?php } ?>
                         
                     </ul>
+                    
                 </div>
             </div>
             <div class="intro-y col-12 col-lg-6">
