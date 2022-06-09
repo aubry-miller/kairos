@@ -62,6 +62,9 @@ $pi=pi();
                                             <?php echo trad('status',$_SESSION["language"]);?>
                                         </th>
                                         <th class="border-bottom-0 text-gray-700 text-nowrap">
+                                            Attribuée à
+                                        </th>
+                                        <th class="border-bottom-0 text-gray-700 text-nowrap">
                                             <?php echo trad('estimated_time',$_SESSION["language"]);?>
                                         </th>
                                         <th class="border-bottom-0 text-gray-700 text-nowrap">
@@ -95,6 +98,9 @@ $pi=pi();
                                                 </td>
                                                 <td>
                                                     <?php echo $job['pt_status'];?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $job['us_firstname'].' '.$job['us_name'];?>
                                                 </td>
                                                 <td>
                                                     <?php echo $job['pt_expected_material_consumption'];?>
@@ -142,6 +148,9 @@ $pi=pi();
                                             <?php echo trad('status',$_SESSION["language"]);?>
                                         </th>
                                         <th class="border-bottom-0 text-gray-700 text-nowrap">
+                                            Attribuée à
+                                        </th>
+                                        <th class="border-bottom-0 text-gray-700 text-nowrap">
                                             <?php echo trad('estimated_time',$_SESSION["language"]);?>
                                         </th>
                                         <th class="border-bottom-0 text-gray-700 text-nowrap">
@@ -173,6 +182,9 @@ $pi=pi();
                                             </td>
                                             <td>
                                                 <?php echo $job['pt_status'];?>
+                                            </td>
+                                            <td>
+                                                <?php echo $job['us_firstname'].' '.$job['us_name'];?>
                                             </td>
                                             <td>
                                                 <?php echo $job['pt_expected_material_consumption'];?>

@@ -36,17 +36,17 @@ $title= trad('users',$_SESSION["language"]);
                         <table class="table mt-40">
                                 <thead class="table-light">
                                         <tr>
-                                            <th class="border-bottom-0 text-gray-700 ">Nom</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Login</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Fonction</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Homepage</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Droits CSR</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Vision planning par tâche</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Vision planning global</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Gestion du site</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Responsable mécanique</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Statut</th>
-                                            <th class="border-bottom-0 text-gray-700 ">Editer</th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('name',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('login_ident',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('function',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('homepage',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('csr_rights',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('view_planning_by_task',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('global_planning_vision',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('site_management',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('mechanical_manager',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('status',$_SESSION["language"]);?></th>
+                                            <th class="border-bottom-0 text-gray-700 "><?php echo trad('edit',$_SESSION["language"]);?></th>
                                         <tr>
                                 </thead>
                                 <tbody>

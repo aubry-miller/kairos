@@ -586,7 +586,7 @@ function select_image_profil_by_id_user($id){
  function select_jobs_by_day_and_step_id($date,$step){
     $pdo=connect();
 
-    $sqlQuery = $pdo->prepare("select * from planning_task, piece, rubber where pc_rubber_id=rb_id and pt_piece_id=pc_id and pt_planned_start_date like ? and pt_step_id=? order by pt_planned_start_date ASC");
+    $sqlQuery = $pdo->prepare("select * from planning_task, piece, rubber, user where pc_rubber_id=rb_id and pt_piece_id=pc_id and pt_operator_id=us_id and pt_planned_start_date like ? and pt_step_id=? order by pt_planned_start_date ASC");
     $sqlQuery->execute(array($date.'%',$step));
     $result = $sqlQuery->fetchAll();
     $pdo=null;
