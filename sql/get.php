@@ -618,3 +618,64 @@ function get_piece_informations_by_id($id){
     return $result[0]; 
 
  }
+
+ function select_orphelan_by_specifications($mandrel_diameter, $mandrel_from, $rubber_id, $fiber_id, $fiber_thickness, $developement, $sleeve_length){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from piece where pc_order_id = '00000000-001-000' and pc_status = 'orphan' and pc_mandrel_diameter=? and  pc_mandrel_form=? and  pc_rubber_id=? and  pc_fiber_id=? and pc_fiber_thickness=? and pc_developement>=? and pc_sleeve_length>=?");
+    $sqlQuery->execute(array($mandrel_diameter, $mandrel_from, $rubber_id, $fiber_id, $fiber_thickness, $developement, $sleeve_length));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_planning_task_by_piece_id($piece_id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from planning_task, step where stp_id=pt_step_id and pt_piece_id=? order by pt_planned_start_date ASC");
+    $sqlQuery->execute(array($piece_id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_planning_task_by_piece_id_and_step_id($piece_id,$step){
+ $pdo=connect();
+
+ $sqlQuery = $pdo->prepare("select * from planning_task where pt_piece_id=? and pt_step_id=?");
+ $sqlQuery->execute(array($piece_id,$step));
+ $result = $sqlQuery->fetchAll();
+ $pdo=null;
+
+ return $result; 
+
+}
+
+
+function select_planning_task_by_piece_id_and_status_is_not($id,$status){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from planning_task where pt_piece_id=? and pt_status!=?");
+    $sqlQuery->execute(array($id,$status));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_temp_order_pieces_number($millnet_id, $millnet_part_id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select temp_pieces_number from temp_order where temp_millnet_id=? and temp_millnet_part_id=?");
+    $sqlQuery->execute(array($millnet_id, $millnet_part_id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result[0]; 
+
+ }

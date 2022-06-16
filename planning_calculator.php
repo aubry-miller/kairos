@@ -5,7 +5,7 @@ include('sql/set.php');
 include('sql/delete.php');
 include('sql/engine.php');
 include('infos.php');
-
+session_start();
 
 //received data
 
@@ -47,21 +47,58 @@ if($plan_result['status'] == false){
 
     ?>
     <br>
-    Do you want to know when the production can be done?
-    <form action="back/best_deadline.php" method="get">
-        <?php
-        if(isset($_GET['temp_id'])){
-            ?>
-            <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
+    <br>
+    <div>
+        <?php echo trad('Want_to_know_the_best_delay?',$_SESSION["language"]);?>
+        <form action="back/best_deadline.php" method="get">
             <?php
-        }
-        ?>
-        <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
-        <input type="submit" name="submit" value="Yes">
-        <input type="submit" name="submit" value="No">
-        <?php
-        ?>
-    </form>
+            if(isset($_GET['temp_id'])){
+                ?>
+                <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
+                <?php
+            }
+            ?>
+            <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
+            <input type="submit" name="submit" value="Yes">
+            <?php
+            ?>
+        </form>
+    </div>
+    <br>
+    <div>
+        <?php echo trad('Want_to_chek_orphan_sleeve_For_best_delay?',$_SESSION["language"]);?>
+        <form action="orphan_sleeve.php" method="get">
+            <?php
+            if(isset($_GET['temp_id'])){
+                ?>
+                <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
+                <?php
+            }
+            ?>
+            <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
+            <input type="submit" name="submit" value="Yes">
+            <?php
+            ?>
+        </form>
+    </div>
+    <br>
+    <div>
+        <?php echo trad('Whant_to_delete_temp_order?',$_SESSION["language"]);?>
+        <form action="back/best_deadline.php" method="get">
+            <?php
+            if(isset($_GET['temp_id'])){
+                ?>
+                <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
+                <?php
+            }
+            ?>
+            <input type="hidden" name="millnet_id" value="<?php echo $millnet_id;?>">
+            <input type="submit" name="submit" value="Delete">
+            <?php
+            ?>
+        </form>
+    </div>
+    
     <?php
 }
 else {

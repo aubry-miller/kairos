@@ -3,7 +3,7 @@ include('../sql/connect.php');
 include('../sql/engine.php');
 include('../sql/set.php');
 
-if($_GET['submit'] == 'No'){
+if($_GET['submit'] == 'Delete'){
     include('../sql/delete.php');
     delete_temp_order($_GET['temp_id']);
 

@@ -624,7 +624,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
         } else{
             // The minimum time required is not respected, we return the fact that the time is impossible
             $planning['status']=false;
-            $planning['reasons']='The minimum time required is not respected, it is therefore impossible to manufacture the order within this period';
+            $planning['reasons']= trad('minimum_time_required_not_respected_impossible_to_manufacture',$_SESSION["language"]);
             return $planning;
         }
 

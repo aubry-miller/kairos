@@ -91,3 +91,11 @@ function add_real_material_consumption_to_planning_task_by_id($time, $id){
     $upd->execute(array($time, $id));
     $pdo=null;
 }
+
+function attribute_orphan_to_new_job($pc_id,$millnet_id,$status){
+    $pdo=connect();
+
+    $upd = $pdo->prepare("update piece SET pc_order_id=?, pc_status=? WHERE pc_id=?");
+    $upd->execute(array($millnet_id,$status,$pc_id));
+    $pdo=null;
+}
