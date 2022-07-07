@@ -43,7 +43,9 @@ $plan_result=first_planningSimulation($millnet_id,$customer_number,$customer_nam
 if($plan_result['status'] == false){
 
     echo $plan_result['reasons'];
-    delete_order($millnet_id);
+    echo '<br>';
+    echo $plan_result['nb_piece_ok'].'/'.$piece_number.' peuvent être fabriquées dans les temps';
+    delete_order($millnet_id);//TODO a déplacer peut-être
 
     ?>
     <br>
@@ -71,6 +73,9 @@ if($plan_result['status'] == false){
             <?php
             if(isset($_GET['temp_id'])){
                 ?>
+                <input type="hidden" name="order_piece_number" value="<?php echo $piece_number;?>">
+                <input type="hidden" name="number_piece_possible" value="<?php echo $plan_result['nb_piece_ok'];?>">
+                <input type="hidden" name="flow_id" value="<?php echo $plan_result['flow_id'];?>">
                 <input type="hidden" name="temp_id" value="<?php echo $_GET['temp_id'];?>">
                 <?php
             }
@@ -102,9 +107,9 @@ if($plan_result['status'] == false){
     <?php
 }
 else {
-    if(isset($_GET['temp_id'])){
-        delete_temp_order($_GET['temp_id']);
-    }
+    // if(isset($_GET['temp_id'])){
+    //     delete_temp_order($_GET['temp_id']);
+    // }
 
     if($piece_number<10){
         $id_last_piece=$millnet_id.'_00'.$piece_number;

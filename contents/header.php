@@ -10,7 +10,7 @@ if(!isset($_SESSION['prenom_nom'])){
 <div class="mobile-menu d-md-none">
     <div class="mobile-menu-bar">
         <a href="accueil.php" class="d-flex me-auto">
-            <!-- <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png"> -->
+            <img alt="Logo kairos" class="w-6" src="images/logo_Kairos_80px.png">
         </a>
         <a href="javascript:;" id="mobile-menu-toggler" class="mobile-menu-bar__toggler"> <i data-feather="bar-chart-2" class="w-8 h-8 text-white"></i> </a>
     </div>
@@ -21,9 +21,9 @@ if(!isset($_SESSION['prenom_nom'])){
 <div class="top-bar-boxed border-bottom border-theme-2 dark-border-dark-3 mt-n7 mt-md-n5 mx-n3 mx-sm-n8 px-3 px-sm-8 mb-12">
     <div class="h-full d-flex align-items-center">
         <!-- BEGIN: Logo -->
-        <a href="accueil.php" class="-intro-x d-none d-md-flex">
-            <!-- <img alt="Logo toolbox" class="w-6" src="images/logo_toolbox_blanc_h80px.png"> -->
-            <span class="text-white fs-lg ms-3"> <span class="fw-medium">Kairos</span></span>
+        <a href="<?php echo $_SESSION['homepage'];?>" class="-intro-x d-none d-md-flex">
+            <img alt="Logo kairos" style="width: 150px;" src="images/logo_Kairos_80px.png">
+            <!-- <span class="text-white fs-lg ms-3"> <span class="fw-medium">Kairos</span></span> -->
         </a>
         <!-- END: Logo -->
         <!-- BEGIN: Breadcrumb-->
@@ -32,7 +32,7 @@ if(!isset($_SESSION['prenom_nom'])){
         
         <!-- BEGIN: Notifications -->
         <div class="intro-x dropdown me-4 me-sm-6">
-            <div class="dropdown-toggle notification cursor-pointer" role="button" aria-expanded="false" data-bs-toggle="dropdown"> <i data-feather="bell" class="notification__icon dark-text-gray-300"></i> </div>
+            <div class="dropdown-toggle notification cursor-pointer notif_bell" role="button" aria-expanded="false" data-bs-toggle="dropdown"> <i data-feather="bell" class="notification__icon dark-text-gray-300"></i> </div>
             <div class="notification-content pt-2 dropdown-menu">
                 <div class="notification-content__box dropdown-content">
                     <div class="notification-content__title dark-text-gray-300"><?php echo trad('notifications',$_SESSION["language"]);?></div>
@@ -111,6 +111,15 @@ if(!isset($_SESSION['prenom_nom'])){
                                 ){ echo 'side-menu--active';}?>">
                         <div class="side-menu__icon"> <i data-feather="calendar"></i> </div>
                         <div class="side-menu__title"><?php echo trad('lining_day_plan',$_SESSION["language"]);?></div>
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="mecanical_dashboard.php" class="side-menu <?php if(
+                                str_contains($_SERVER['REQUEST_URI'],'/lining_day_plan.php')
+                                ){ echo 'side-menu--active';}?>">
+                        <div class="side-menu__icon"> <i data-feather="sliders"></i> </div>
+                        <div class="side-menu__title">Mecanical Dashboard</div>
                     </a>
                 </li>
             </ul>

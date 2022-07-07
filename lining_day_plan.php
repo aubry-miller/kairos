@@ -11,6 +11,7 @@ $pi=pi();
 <html lang="fr" class="<?php echo $_SESSION['mode'];?>">
     <!-- BEGIN: Head -->
     <head>
+    
         <meta charset="utf-8">
         <!--<link href="images/logo.svg" rel="shortcut icon">-->
         <meta name="viewport" content="width=device-width, initial-scale=1">

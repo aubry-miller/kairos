@@ -3,6 +3,13 @@ include('../sql/connect.php');
 include('../sql/get.php');
 include('../sql/engine.php');
 session_start();
+$_SESSION["user_id"] = 'ade';
+$_SESSION["prenom_nom"] = 'Aubry Debord';
+$_SESSION["mail"] = 'aubry.debord@millergraphics.com';
+$_SESSION["pseudo"] = 'ade';
+$_SESSION["language"] = 'fr';
+$_SESSION['mode']= 'light';  
+$_SESSION['homepage']= 'new_order.php';  
 $title= 'demo';
 ?>
 
@@ -16,7 +23,7 @@ $title= 'demo';
         <meta name="description" content="Icewall admin is super flexible, powerful, clean & modern responsive bootstrap admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Icewall Admin Template, dashboard template, flat admin template, responsive admin template, web app">
         <meta name="author" content="LEFT4CODE">
-        <title><?php echo trad('users',$_SESSION["language"]);?></title>
+        <title>Démo tableau de bord</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="dist/css/app.css" />
         <link rel="stylesheet" href="style/custom.css" />
@@ -30,6 +37,80 @@ $title= 'demo';
         include('../contents/header.php');        
 ?>
     <div class="content">
+
+
+
+        <div class="intro-y box">
+            <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
+                <h2 class="fw-medium fs-base me-auto">
+                    Planning global rectif
+                </h2>
+            </div>
+            <div id="progressbar-height" class="p-5">
+                <div class="preview">
+                    <!-- lien pour atteindre le planning de ce jour-->
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-16 <span style="float:right;">(18 heures)</span>
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-4/5" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-17 <span style="float:right;">(18 heures)</span>
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-2/3" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-18 <span style="float:right;">(0 heure)</span>
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-19 <span style="float:right;">(0 heure)</span> 
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-0" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-20 <span style="float:right;">(12 heures)</span> 
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-4/5" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-21 <span style="float:right;">(18 heures)</span> 
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-2/3" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="">
+                        <div class="mb-6">
+                            2022-06-22 <span style="float:right;">(18 heures)</span> 
+                            <div class="progress h-3 mt-3">
+                                <div class="progress-bar w-1/2" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="grid columns-12 gap-6">
             <div class="g-col-12 g-col-xxl-9">
                 <div class="grid columns-12 gap-6">

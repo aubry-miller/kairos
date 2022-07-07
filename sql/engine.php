@@ -280,10 +280,22 @@ function possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$de
             if ($response['date'] == false){
                 // We return the fact that the order is not feasible in this period due to lack of mandrel
                 return 'Impossible : no mandrel available';
-            } else {                
-                $_SESSION[$session_key]['mandrel_id']=$response['mandrel_id'];
-                return $response['date'];
+            // } else {                
+            //     $_SESSION[$session_key]['mandrel_id']=$response['mandrel_id'];
+            //     return $response['date'];
+            // }
+
+            
+            } else {        
+                
+                if($now < $response['date']){
+                    $_SESSION[$session_key]['mandrel_id']=$response['mandrel_id'];
+                    return $response['date'];
+                } else {
+                    return 'Impossible : no mandrel available';
+                }
             }
+            
 
             
         } else {
@@ -468,7 +480,15 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                 if(isset($steps[$i])){
                     $result[$piece_number][$i]=possibility_for_step($steps,$mandrel_diameter, $form,$sleeve_length,$deadline_task,$i,$minimum_time,$now_base,$session_key);
                     
+                    if($result[$piece_number][$i]=== false || $result[$piece_number][$i]== 'Impossible : no mandrel available' ){
+                        $planning['status']=false;
+                        $planning['reasons']='Not possible in this time';
+                        // Return the number of parts that can be fully manufactured for the management of orphans
+                        $planning['nb_piece_ok']=$i-1;
+                        return $planning;
+                    }
 
+                    
                     ///////////////////////////////////////////////////////////////////////////////////
                     ///////////////////////////// STAFF AVAILABILITY CHECK ////////////////////////////
                     //////////////////////////////////// Beggining ////////////////////////////////////
@@ -557,6 +577,8 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
                                     if($verif_machine == false){
                                         $planning['status']=false;
                                         $planning['reasons']='No machine available, it is therefore impossible to manufacture the order within this period';
+                                        // Return the number of parts that can be fully manufactured for the management of orphans
+                                        $planning['nb_piece_ok']=$i-1;
                                         return $planning;
                                     }
                                     
@@ -625,6 +647,8 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
             // The minimum time required is not respected, we return the fact that the time is impossible
             $planning['status']=false;
             $planning['reasons']= trad('minimum_time_required_not_respected_impossible_to_manufacture',$_SESSION["language"]);
+            // Return the number of parts that can be fully manufactured for the management of orphans
+            $planning['nb_piece_ok']=0;
             return $planning;
         }
 
