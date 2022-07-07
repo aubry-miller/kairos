@@ -218,6 +218,21 @@
     display:inline-block;
 }
 
+meter::-webkit-meter-optimum-value {
+background: #828282;
+border-radius: 10px 0 0 10px ;
+}
+meter::-moz-meter-bar { /* Firefox Pseudo Class */
+background: #828282;
+border-radius: 10px 0 0 10px  ;
+}
+
+.meter_kairos{
+    width:100%;
+    border-radius: 10px;
+    
+}
+
 @media screen and (max-width: 700px){
     .choix_fond{
         display: inline-block;

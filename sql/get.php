@@ -422,7 +422,7 @@ function select_temp_orders_by_id($id){
     $results = $verify->fetchAll();
     $pdo=null;
     
-    return $results[0];
+    return $results;
 }
 
 function get_grinding_time($diam, $sleeve_length){
@@ -678,4 +678,76 @@ function select_planning_task_by_piece_id_and_status_is_not($id,$status){
 
     return $result[0]; 
 
+ }
+
+ function select_piece_id_by_order_id($order_id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from piece where pc_order_id = ?");
+    $sqlQuery->execute(array($order_id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_furthest_granding_plan_date(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  pt_step_id = 4 and (pt_status='Planned' or pt_status='In Progress')");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_estimated_workload_at_date_by_step($date,$step){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select ((HOUR(pt_expected_duration)*60)+ MINUTE(pt_expected_duration)) AS nb_minute from planning_task where pt_date = ? and pt_step_id = ? and (pt_status='Planned' or pt_status='In Progress')");
+    $sqlQuery->execute(array($date,$step));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_over_time_at_date($date){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from overtime_operator, link_operator_sector where oo_operator_id=los_operator and oo_date = ?");
+    $sqlQuery->execute(array($date));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_operator_default_time_by_sector($sector){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from operator_default_time, link_operator_sector where odt_user_id=los_operator and los_sector = ?");
+    $sqlQuery->execute(array($sector));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+ }
+
+ function select_operator_absence_at_date_and_by_sector($date,$sector){
+    $pdo=connect();
+    $date_start=$date.' 23:59:59';
+    $date_end=$date.' 00:00:00';
+
+    $sqlQuery = $pdo->prepare("select * from operator_absences, link_operator_sector where oa_operator_id=los_operator and oa_start_hour_date <= ? and oa_end_hour_date>=? and los_sector = ?");
+    $sqlQuery->execute(array($date_start, $date_end, $sector));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
  }

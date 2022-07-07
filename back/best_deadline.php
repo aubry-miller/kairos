@@ -19,6 +19,9 @@ if($_GET['submit'] == 'Delete'){
 
     
     $order=select_temp_orders_by_id($_GET['temp_id']);
+    if($order != []){
+        $order=$order[0];
+    }
 
     $millnet_id=$order['temp_millnet_id'].'-'.$order['temp_millnet_part_id'];
     // We will look for the workflow that corresponds to the type of product

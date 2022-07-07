@@ -3,6 +3,13 @@ include('../sql/connect.php');
 include('../sql/get.php');
 include('../sql/engine.php');
 session_start();
+$_SESSION["user_id"] = 'ade';
+$_SESSION["prenom_nom"] = 'Aubry Debord';
+$_SESSION["mail"] = 'aubry.debord@millergraphics.com';
+$_SESSION["pseudo"] = 'ade';
+$_SESSION["language"] = 'fr';
+$_SESSION['mode']= 'light';  
+$_SESSION['homepage']= 'new_order.php';  
 $title= 'demo';
 ?>
 
@@ -16,7 +23,7 @@ $title= 'demo';
         <meta name="description" content="Icewall admin is super flexible, powerful, clean & modern responsive bootstrap admin template with unlimited possibilities.">
         <meta name="keywords" content="admin template, Icewall Admin Template, dashboard template, flat admin template, responsive admin template, web app">
         <meta name="author" content="LEFT4CODE">
-        <title><?php echo trad('users',$_SESSION["language"]);?></title>
+        <title>Démo charge atelier</title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="dist/css/app.css" />
         <link rel="stylesheet" href="style/custom.css" />
@@ -29,7 +36,7 @@ $title= 'demo';
         <?php 
         include('../contents/header.php');        
 ?>
-    <h4 class="fs-xl fw-medium lh-1 mt-3 mb-6">Atelier Fibres</h4>
+    <h4 class="fs-xl fw-medium lh-1 mt-3 mb-6">Atelier Garnissage</h4>
     <div class="content">
         <div class="row gap-y-6 mt-5">
             
@@ -44,192 +51,246 @@ $title= 'demo';
                     <div id="boxed-accordion" class="p-5">
                         <div class="preview">
                             <div id="faq-accordion-2" class="accordion accordion-boxed">
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
                                     <div id="faq-accordion-content-9" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-9" aria-expanded="false" aria-controls="faq-accordion-collapse-9">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview0" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                00000000-000-001-001
+                                                Hamelin - 00000000-000-001-001
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 80 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-9" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-9" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 1<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview0" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            Hamelin - 00000000-000-001-001
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>80 min</b><br>
+                                        <br>
+                                        Client : Hamelin<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-10" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-10" aria-expanded="false" aria-controls="faq-accordion-collapse-2">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview1" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                11111111-000-001-001
+                                                Lysipack - 11111111-000-001-001
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 56 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-10" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-10" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client :Exemple 2<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview1" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            Lysipack - 11111111-000-001-001
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>56 min</b><br>
+                                        <br>
+                                        Client : Lysipack<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+                                
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-11" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-11" aria-expanded="false" aria-controls="faq-accordion-collapse-11">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview2" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                22222222-000-001-001
+                                                Tilwel - 23232323-000-001-001
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 60 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-11" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-8" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 3<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="accordion-item">
-                                    <div id="faq-accordion-content-8" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-8" aria-expanded="false" aria-controls="faq-accordion-collapse-8">
-                                            <div style="display:inline-block; width:70%;">
-                                                23232323-000-001-001
-                                            </div>
-                                            <div style="display:inline-block; text-align:right;width:29%;">
-                                                60 minutes
-                                            </div>
-                                        </button>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview2" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            Tilwel - 23232323-000-001-001
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                     </div>
-                                    <div id="faq-accordion-collapse-8" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-8" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 5<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>60 min</b><br>
+                                        <br>
+                                        Client : Tilwel<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
                                     </div>
-                                </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+                                
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-7" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-7" aria-expanded="false" aria-controls="faq-accordion-collapse-7">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview3" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                12121212-000-001-001
+                                                Tilwel - 12121212-000-001-001
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 30 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-7" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-8" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 6<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview3" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            Tilwel - 12121212-000-001-001
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>30 min</b><br>
+                                        <br>
+                                        Client : Tilwel<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+                                
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-6" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-6" aria-expanded="false" aria-controls="faq-accordion-collapse-6">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview4" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                12121212-000-001-002
+                                               XXXXXXX - 12121212-000-001-002
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 30 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-6" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-8" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 7<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview4" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            XXXXXXX - 12121212-000-001-002
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>30 min</b><br>
+                                        <br>
+                                        Client : XXXXXXX<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
                             </div>
                         </div>
                         <div class="source-code d-none">
@@ -287,99 +348,145 @@ $title= 'demo';
                     <div id="boxed-accordion" class="p-5">
                         <div class="preview">
                             <div id="faq-accordion-2" class="accordion accordion-boxed">
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-5" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-5" aria-expanded="false" aria-controls="faq-accordion-collapse-5">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview5" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                00000000-000-001-002
+                                                XXXXXXX - 00000000-000-001-002
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 80 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-5" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-6" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 8<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview5" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            XXXXXXX - 00000000-000-001-002
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>80 min</b><br>
+                                        <br>
+                                        Client : XXXXXXX<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-4" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-4" aria-expanded="false" aria-controls="faq-accordion-collapse-4">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview6" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                11111111-000-001-002
+                                                XXXXXXX - 11111111-000-001-002
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 56 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-4" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-7" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client :Exemple 9<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview6" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            XXXXXXX - 11111111-000-001-002
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>56 min</b><br>
+                                        <br>
+                                        Client : XXXXXXX<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
+
+
+
+                                <!-- BEGIN: Slide Over Toggle -->
                                 <div class="accordion-item">
-                                    <div id="faq-accordion-content-3" class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-3" aria-expanded="false" aria-controls="faq-accordion-collapse-3">
+                                    <div id="faq-accordion-content-9" class="accordion-header">
+                                        <a data-bs-toggle="offcanvas" href="#basic-slide-over-preview7" role="button" aria-controls="basicSlideOver" class="accordion-button collapsed">
                                             <div style="display:inline-block; width:70%;">
-                                                33333333-000-001-001
+                                                XXXXXXX - 33333333-000-001-001
                                             </div>
                                             <div style="display:inline-block; text-align:right;width:29%;">
                                                 48 minutes
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div id="faq-accordion-collapse-3" class="accordion-collapse collapse" aria-labelledby="faq-accordion-content-8" data-bs-parent="#faq-accordion-2">
-                                        <div class="accordion-body lh-lg">
-                                           Client : Exemple 10<br>
-                                            CSR :<br>
-                                            Gomme :<br>
-                                            Laize :<br>
-                                            Table :<br>
-                                            Décalage table :Centrée<br>
-                                            ø porteur :<br>
-                                            ø rectif :<br>
-                                            Encoche :<br>
-                                            Position des encoches :<br>
-                                            Fibre :<br>
-                                            Épaisseur fibre :<br>
-                                            Puce :<br>
-                                            Épaulement :<br>
-                                            Diamètre de l'épaulement :
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
+                                <!-- END: Slide Over Toggle -->
+                                <!-- BEGIN: Slide Over Content -->
+                                <div class="offcanvas offcanvas-end" tabindex="-1" id="basic-slide-over-preview7" aria-labelledby="basicSlideOver">
+                                    <div class="offcanvas-header p-5">
+                                        <h5 class="offcanvas-title fw-medium fs-base">
+                                            XXXXXXX - 33333333-000-001-001
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body">
+                                        Temps estimé : <b>48 min</b><br>
+                                        <br>
+                                        Client : XXXXXXX<br>
+                                        CSR :<br>
+                                        Gomme :<br>
+                                        Laize :<br>
+                                        Table :<br>
+                                        Décalage table :Centrée<br>
+                                        ø porteur :<br>
+                                        ø rectif :<br>
+                                        Encoche :<br>
+                                        Position des encoches :<br>
+                                        Fibre :<br>
+                                        Épaisseur fibre :<br>
+                                        Puce :<br>
+                                        Épaulement :<br>
+                                        Diamètre de l'épaulement :
+                                    </div>
+                                </div> 
+                                <!-- END: Slide Over Content -->
+
                             </div>
                         </div>
                         <div class="source-code d-none">
