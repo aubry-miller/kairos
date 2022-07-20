@@ -83,10 +83,10 @@ foreach ($days as $day) {
     
 
 
-    if($over_time==[] && ($day_number==1 || $day_number == 7 || $day_without_year=='01-01' || $day_without_year=='01-05' || $day_without_year=='08-05' || $day_without_year=='07-14' || $day_without_year=='08-15' || $day_without_year=='11-01' || $day_without_year=='11-11' || $day_without_year=='12-25')){
+    if($over_time==[] && ($day_number==1 || $day_number == 7 || $day_without_year=='01-01' || $day_without_year=='05-01' || $day_without_year=='05-08' || $day_without_year=='07-14' || $day_without_year=='08-15' || $day_without_year=='11-01' || $day_without_year=='11-11' || $day_without_year=='12-25')){
         $dispo=0;
         $verif_occupation=1;
-    } else if($over_time!=[] && ($day_number==1 || $day_number == 7 || $day_without_year=='01-01' || $day_without_year=='01-05' || $day_without_year=='08-05' || $day_without_year=='07-14' || $day_without_year=='08-15' || $day_without_year=='11-01' || $day_without_year=='11-11' || $day_without_year=='12-25')){
+    } else if($over_time!=[] && ($day_number==1 || $day_number == 7 || $day_without_year=='01-01' || $day_without_year=='05-01' || $day_without_year=='05-08' || $day_without_year=='07-14' || $day_without_year=='08-15' || $day_without_year=='11-01' || $day_without_year=='11-11' || $day_without_year=='12-25')){
         $verif_occupation=0;
         // Overtime at weekends and public holidays
         $dispo=0;
@@ -476,34 +476,67 @@ foreach ($days as $day) {
 // $day_grinding_dispo;
 // $day_grinding_occupation_decimal;
 
-$day_grinding_busy=ceil($day_grinding_occupation_decimal/$day_grinding_dispo*100);
+if($day_grinding_dispo!=0){
+    $day_grinding_busy=ceil($day_grinding_occupation_decimal/$day_grinding_dispo*100);
+} else{
+    $day_grinding_busy=100;
+}
 $day_grinding_not_busy=100-$day_grinding_busy;
 
-$tom_grinding_busy=ceil($tom_grinding_occupation_decimal/$tom_grinding_dispo*100);
+
+if($tom_grinding_dispo_ebauche!=0){
+    $tom_grinding_busy=ceil($tom_grinding_occupation_decimal/$tom_grinding_dispo*100);
+} else{
+    $tom_grinding_busy=100;
+}
 $tom_grinding_not_busy=100-$tom_grinding_busy;
 
 /////
 
-$day_grinding_busy_ebauche=ceil($day_grinding_occupation_decimal_ebauche/$day_grinding_dispo_ebauche*100);
+if($day_grinding_dispo_ebauche!=0){
+    $day_grinding_busy_ebauche=ceil($day_grinding_occupation_decimal_ebauche/$day_grinding_dispo_ebauche*100);
+} else{
+    $day_grinding_busy_ebauche=100;
+}
 $day_grinding_not_busy_ebauche=100-$day_grinding_busy_ebauche;
 
-$tom_grinding_busy_ebauche=ceil($tom_grinding_occupation_decimal_ebauche/$tom_grinding_dispo_ebauche*100);
+if($tom_grinding_dispo_ebauche!=0){
+    $tom_grinding_busy_ebauche=ceil($tom_grinding_occupation_decimal_ebauche/$tom_grinding_dispo_ebauche*100);
+} else{
+    $tom_grinding_busy_ebauche=100;
+}
 $tom_grinding_not_busy_ebauche=100-$tom_grinding_busy_ebauche;
 
 /////
 
-$day_grinding_busy_lining=ceil($day_grinding_occupation_decimal_lining/$day_grinding_dispo_lining*100);
+if($day_grinding_dispo_lining!=0){
+    $day_grinding_busy_lining=ceil($day_grinding_occupation_decimal_lining/$day_grinding_dispo_lining*100);
+} else{
+    $day_grinding_busy_lining=100;
+}
 $day_grinding_not_busy_lining=100-$day_grinding_busy_lining;
 
-$tom_grinding_busy_lining=ceil($tom_grinding_occupation_decimal_lining/$tom_grinding_dispo_lining*100);
+if($tom_grinding_dispo_lining!=0){
+    $tom_grinding_busy_lining=ceil($tom_grinding_occupation_decimal_lining/$tom_grinding_dispo_lining*100);
+} else{
+    $tom_grinding_busy_lining=100;
+}
 $tom_grinding_not_busy_lining=100-$tom_grinding_busy_lining;
 
 /////
 
-$day_grinding_busy_fibre=ceil($day_grinding_occupation_decimal_fibre/$day_grinding_dispo_fibre*100);
+if($day_grinding_dispo_fibre!=0){
+    $day_grinding_busy_fibre=ceil($day_grinding_occupation_decimal_fibre/$day_grinding_dispo_fibre*100);
+} else{
+    $day_grinding_busy_fibre=100;
+}
 $day_grinding_not_busy_fibre=100-$day_grinding_busy_fibre;
 
-$tom_grinding_busy_fibre=ceil($tom_grinding_occupation_decimal_fibre/$tom_grinding_dispo_fibre*100);
+if($tom_grinding_dispo_fibre!=0){
+    $tom_grinding_busy_fibre=ceil($tom_grinding_occupation_decimal_fibre/$tom_grinding_dispo_fibre*100);
+} else{
+    $tom_grinding_busy_fibre=100;
+}
 $tom_grinding_not_busy_fibre=100-$tom_grinding_busy_fibre;
 
 
@@ -937,8 +970,116 @@ $dataPointsFibreN1 = array(
                     <div id="icon-alert" class="p-5">
                         <div class="preview">
                             <div class="alert alert-primary d-flex align-items-center mb-2" role="alert"> <i data-feather="alert-triangle" class="w-6 h-6 me-2"></i>
-                                • Thomas Faucon absent<br>
-                                • Pinacho en maintenance
+                            <?php
+
+                            ////////////////////////////////////////////////////////////
+                            ////////////////// Operator absence START //////////////////
+                            ////////////////////////////////////////////////////////////
+
+                            $absence_operators=select_operators_absence_at_date($now);
+                            if($absence_operators!=[]){
+                                foreach($absence_operators as $absence_operator){
+                                    $start_date_time= new DateTime($absence_operator['oa_start_hour_date']);
+                                    $start_date=$start_date_time->format('Y-m-d');
+                                    $end_date_time= new DateTime($absence_operator['oa_end_hour_date']);
+                                    $end_date=$end_date_time->format('Y-m-d');
+
+                                    if($end_date==$start_date){
+                                        $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                        $dt=$operator_default_production_time[0]['otd_production_time'];
+                                        $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
+                                        
+                                        if($hm>=$dt){
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                        } else {
+                                            $absence_time=$dt-$hm;
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                        }
+                                    } else {
+                                        if($start_date != $now && $end_date != $now){
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                        } else if($start_date == $now){
+                                            $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                            $dt=$operator_default_production_time[0]['otd_production_time'];
+                                            $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
+                                            if($hm>=$dt){
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            } else {
+                                                $absence_time=$dt-$hm;
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            }
+                                           
+
+                                        }else if($end_date == $now){
+                                            $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                            $dt=$operator_default_production_time[0]['otd_production_time'];
+                                            $hm=$absence_operator['oa_during_hours_last_day'].'.'.$absence_operator['oa_during_minutes_last_day'];
+                                            if($hm>=$dt){
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            } else {
+                                                $absence_time=$dt-$hm;
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+
+                            ////////////////////////////////////////////////////////////
+                            /////////////////// Operator absence END ///////////////////
+                            ////////////////////////////////////////////////////////////
+
+                            /////////////////////////////////////////////////////////////
+                            ///////////////// Machine maintenance START /////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            $maintenances=select_maintenance_at_date($now);
+                            
+                            
+                            if($maintenances!=[]){
+                                foreach($maintenances as $maintenance){
+                                    $start_date_time= new DateTime($maintenance['ms_start_hour_date']);
+                                    $start_date=$start_date_time->format('Y-m-d');
+                                    $end_date_time= new DateTime($maintenance['ms_end_hour_date']);
+                                    $end_date=$end_date_time->format('Y-m-d');
+
+                                    if($end_date==$start_date){
+                                        echo '• '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        
+                                    } else {
+                                        if($start_date != $now && $end_date != $now){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance toute la journée.<br>';
+                                        } else if($start_date == $now){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        }else if($end_date == $now){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
+                                        }
+                                    }
+                                    
+                                }
+                            }
+
+                            /////////////////////////////////////////////////////////////
+                            ////////////////// Machine maintenance END //////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            /////////////////////////////////////////////////////////////
+                            ////////////////////// Over time START //////////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            $alert_overtimes=select_over_time_at_date($now);
+                            if($alert_overtimes!=[]){
+                                foreach($alert_overtimes as $alert_overtime){                    
+                                 echo '• '.$alert_overtime['oo_during'].' heure(s) supplémentaire(s) prévue(s) pour '.$alert_overtime ["us_firstname"].' '.$alert_overtime ["us_name"].'.<br>';
+                                }
+                            }
+
+                            /////////////////////////////////////////////////////////////
+                            //////////////////////// Over time END //////////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            ?>
                             </div>
                         </div>
                     </div>
@@ -955,8 +1096,23 @@ $dataPointsFibreN1 = array(
                     <div id="icon-alert" class="p-5">
                         <div class="preview">
                             <div class="alert alert-danger d-flex align-items-center mb-2" role="alert"> <i data-feather="alert-triangle" class="w-6 h-6 me-2"></i>
-                                • Commande 00000-000-000-001 en retard<br>
-                                • Stock résine bas
+                                <?php
+                                /////////////////////////////////////////////////////////////
+                                ///////////////////// late orders START /////////////////////
+                                /////////////////////////////////////////////////////////////
+
+                                $late_orders=select_late_orders($now);
+                                foreach($late_orders as $late_order){
+                                    echo '• L\'étape '.$late_order['stp_label'].' de la pièce '.$late_order['pt_piece_id'].' est en retard.<br>';
+                                }
+
+                                /////////////////////////////////////////////////////////////
+                                ////////////////////// late orders END //////////////////////
+                                /////////////////////////////////////////////////////////////
+                                
+                                //TODO Alert when stock is too low
+                                ?>
+                                
                             </div>
                         </div>
                     </div>
@@ -1099,14 +1255,122 @@ $dataPointsFibreN1 = array(
             <div class="intro-y box mt-5">
                 <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                     <h2 class="fw-medium fs-base me-auto">
-                        Informations jours à venir
+                        Informations lendemain
                     </h2>
                 </div>
                 <div id="icon-alert" class="p-5">
                     <div class="preview">
                         <div class="alert alert-warning d-flex align-items-center mb-2" role="alert"> <i data-feather="alert-circle" class="w-6 h-6 me-2"></i>
-                            • Thomas Faucon jusqu'au 12-06-2022<br>
-                            • Absence Alexandre du 14-06-2022 au 16-06-2022
+                        <?php
+                        ////////////////////////////////////////////////////////////
+                            ////////////////// Operator absence START //////////////////
+                            ////////////////////////////////////////////////////////////
+
+                            $absence_operators=select_operators_absence_at_date($tomorrow);
+                            if($absence_operators!=[]){
+                                foreach($absence_operators as $absence_operator){
+                                    $start_date_time= new DateTime($absence_operator['oa_start_hour_date']);
+                                    $start_date=$start_date_time->format('Y-m-d');
+                                    $end_date_time= new DateTime($absence_operator['oa_end_hour_date']);
+                                    $end_date=$end_date_time->format('Y-m-d');
+
+                                    if($end_date==$start_date){
+                                        $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                        $dt=$operator_default_production_time[0]['otd_production_time'];
+                                        $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
+                                        
+                                        if($hm>=$dt){
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                        } else {
+                                            $absence_time=$dt-$hm;
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                        }
+                                    } else {
+                                        if($start_date != $tomorrow && $end_date != $tomorrow){
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                        } else if($start_date == $tomorrow){
+                                            $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                            $dt=$operator_default_production_time[0]['otd_production_time'];
+                                            $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
+                                            if($hm>=$dt){
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            } else {
+                                                $absence_time=$dt-$hm;
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            }
+                                           
+
+                                        }else if($end_date == $tomorrow){
+                                            $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
+                                            $dt=$operator_default_production_time[0]['otd_production_time'];
+                                            $hm=$absence_operator['oa_during_hours_last_day'].'.'.$absence_operator['oa_during_minutes_last_day'];
+                                            if($hm>=$dt){
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            } else {
+                                                $absence_time=$dt-$hm;
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+
+                            ////////////////////////////////////////////////////////////
+                            /////////////////// Operator absence END ///////////////////
+                            ////////////////////////////////////////////////////////////
+
+                            /////////////////////////////////////////////////////////////
+                            ///////////////// Machine maintenance START /////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            $maintenances=select_maintenance_at_date($tomorrow);                   
+                            if($maintenances!=[]){
+                                foreach($maintenances as $maintenance){
+                                    $start_date_time= new DateTime($maintenance['ms_start_hour_date']);
+                                    $start_date=$start_date_time->format('Y-m-d');
+                                    $end_date_time= new DateTime($maintenance['ms_end_hour_date']);
+                                    $end_date=$end_date_time->format('Y-m-d');
+
+                                    if($end_date==$start_date){
+                                        echo '• '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        
+                                    } else {
+                                        if($start_date != $tomorrow && $end_date != $tomorrow){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance toute la journée.<br>';
+                                        } else if($start_date == $tomorrow){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        }else if($end_date == $tomorrow){
+                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
+                                        }
+                                    }
+                                    
+                                }
+                            }
+
+                            /////////////////////////////////////////////////////////////
+                            ////////////////// Machine maintenance END //////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            /////////////////////////////////////////////////////////////
+                            ////////////////////// Over time START //////////////////////
+                            /////////////////////////////////////////////////////////////
+
+                            $alert_overtimes=select_over_time_at_date($tomorrow);
+                            if($alert_overtimes!=[]){
+                                foreach($alert_overtimes as $alert_overtime){                    
+                                 echo '• '.$alert_overtime['oo_during'].' heure(s) supplémentaire(s) prévue(s) pour '.$alert_overtime ["us_firstname"].' '.$alert_overtime ["us_name"].'.<br>';
+                                }
+                            }
+
+                            /////////////////////////////////////////////////////////////
+                            //////////////////////// Over time END //////////////////////
+                            /////////////////////////////////////////////////////////////
+                            
+                            if($absence_operators==[] && $maintenances==[] && $alert_overtimes==[]){
+                                echo 'Rien à signaler.';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

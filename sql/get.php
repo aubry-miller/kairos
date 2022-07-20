@@ -719,7 +719,7 @@ function select_planning_task_by_piece_id_and_status_is_not($id,$status){
  function select_over_time_at_date($date){
     $pdo=connect();
 
-    $sqlQuery = $pdo->prepare("select * from overtime_operator, link_operator_sector where oo_operator_id=los_operator and oo_date = ?");
+    $sqlQuery = $pdo->prepare("select * from overtime_operator, link_operator_sector, user where oo_operator_id=us_id and oo_operator_id=los_operator and oo_date = ?");
     $sqlQuery->execute(array($date));
     $result = $sqlQuery->fetchAll();
     $pdo=null;
@@ -750,4 +750,99 @@ function select_planning_task_by_piece_id_and_status_is_not($id,$status){
     $pdo=null;
 
     return $result; 
+ }
+
+ function select_operators_absence_at_date($date){
+    $pdo=connect();
+    $date_start=$date.' 23:59:59';
+    $date_end=$date.' 00:00:00';
+
+    $sqlQuery = $pdo->prepare("select * from operator_absences, user where oa_operator_id=us_id and oa_start_hour_date <= ? and oa_end_hour_date>=?");
+    $sqlQuery->execute(array($date_start, $date_end));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+ }
+
+ function select_maintenance_at_date($date){
+    $pdo=connect();
+    $date_start=$date.' 23:59:59';
+    $date_end=$date.' 00:00:00';
+
+    $sqlQuery = $pdo->prepare("select * from machine_stop, machine where ms_machine_id=mc_id and ms_start_hour_date <= ? and ms_end_hour_date>=?");
+    $sqlQuery->execute(array($date_start, $date_end));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+ }
+
+ function select_late_orders($date){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from planning_task, step where pt_step_id=stp_id and pt_date <=? and (pt_status='In progress' or pt_status='Planned')");
+    $sqlQuery->execute(array($date));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+ }
+
+ function select_furthest_date_of_use_of_mandrel(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  pt_mandrel_id is not null");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_all_mandrels(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select * from mandrel, sector where mn_sector_id=sc_id order by mn_diameter, mn_id");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function get_mandrel_use_by_id_at_date($mandrel_id,$date){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from planning_task where pt_mandrel_id=? and pt_date=?");
+    $verify->execute(array($mandrel_id,$date));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function get_mandrel_use_by_id_after_date($mandrel_id,$date){
+    $pdo=connect();
+
+    $verify = $pdo->prepare("select * from planning_task where pt_mandrel_id=? and pt_date>=? order by pt_date ASC");
+    $verify->execute(array($mandrel_id,$date));
+    $results = $verify->fetchAll();
+    $pdo=null;
+    
+    return $results;
+}
+
+function select_furthest_date_of_use_of_mandrel_by_id($mandrel_id){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where pt_mandrel_id = ?");
+    $sqlQuery->execute(array($mandrel_id));
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
  }
