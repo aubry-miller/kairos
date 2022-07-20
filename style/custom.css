@@ -218,6 +218,11 @@
     display:inline-block;
 }
 
+.il-b_va{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 meter::-webkit-meter-optimum-value {
 background: #828282;
 border-radius: 10px 0 0 10px ;
@@ -231,6 +236,11 @@ border-radius: 10px 0 0 10px  ;
     width:100%;
     border-radius: 10px;
     
+}
+
+.mandrels_list:hover{
+    background-color: rgb(243, 245, 245);
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px){
