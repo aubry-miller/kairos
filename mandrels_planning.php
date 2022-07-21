@@ -55,45 +55,45 @@ $title = 'Mandrel Planning';
                     $day_number = DAYSWEEK[date("w",$timestamp)];
                     // echo 'day =>'.$day_number.'<br>';
                     if($day_number==1){
-                        $day_name="Dimanche";//TODO traduct
+                        $day_name=trad('sunday',$_SESSION["language"]);
                     } else if($day_number==2){
-                        $day_name="Lundi";//TODO traduct
+                        $day_name=trad('monday',$_SESSION["language"]);
                     } else if($day_number==3){
-                        $day_name="Mardi";//TODO traduct
+                        $day_name=trad('tuesday',$_SESSION["language"]);
                     } else if($day_number==4){
-                        $day_name="Mercredi";//TODO traduct
+                        $day_name=trad('wednesday',$_SESSION["language"]);
                     } else if($day_number==5){
-                        $day_name="Jeudi";//TODO traduct
+                        $day_name=trad('thursday',$_SESSION["language"]);
                     } else if($day_number==6){
-                        $day_name="Vendredi";//TODO traduct
+                        $day_name=trad('friday',$_SESSION["language"]);
                     } else if($day_number==7){
-                        $day_name="Samedi";//TODO traduct
+                        $day_name=trad('saturday',$_SESSION["language"]);
                     }
 
                     if($month=='01'){
-                        $month_name='janvier';//TODO traduct
+                        $month_name=trad('january',$_SESSION["language"]);
                     } else if($month=='02'){
-                        $month_name='février';//TODO traduct
+                        $month_name=trad('february',$_SESSION["language"]);
                     } else if($month=='03'){
-                        $month_name='mars';//TODO traduct
+                        $month_name=trad('march',$_SESSION["language"]);
                     } else if($month=='04'){
-                        $month_name='avril';//TODO traduct
+                        $month_name=trad('april',$_SESSION["language"]);
                     } else if($month=='05'){
-                        $month_name='mai';//TODO traduct
+                        $month_name=trad('may',$_SESSION["language"]);
                     } else if($month=='06'){
-                        $month_name='juin';//TODO traduct
+                        $month_name=trad('june',$_SESSION["language"]);
                     } else if($month=='07'){
-                        $month_name='juillet';//TODO traduct
+                        $month_name=trad('july',$_SESSION["language"]);
                     } else if($month=='08'){
-                        $month_name='août';//TODO traduct
+                        $month_name=trad('august',$_SESSION["language"]);
                     } else if($month=='09'){
-                        $month_name='septembre';//TODO traduct
+                        $month_name=trad('september',$_SESSION["language"]);
                     } else if($month=='10'){
-                        $month_name='octobre';//TODO traduct
+                        $month_name=trad('october',$_SESSION["language"]);
                     } else if($month=='11'){
-                        $month_name='novembre';//TODO traduct
+                        $month_name=trad('november',$_SESSION["language"]);
                     } else if($month=='12'){
-                        $month_name='décembre';//TODO traduct
+                        $month_name=trad('december',$_SESSION["language"]);
                     }
                     ?>
                     <div class="box mt-8 px-2">

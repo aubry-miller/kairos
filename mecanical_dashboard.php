@@ -35,47 +35,46 @@ foreach ($days as $day) {
     $timestamp = mktime (0, 0, 0, $month, $day, $year);
     // Day of the week
     $day_number = DAYSWEEK[date("w",$timestamp)];
-    // echo 'day =>'.$day_number.'<br>';
     if($day_number==1){
-        $day_name="Dimanche";//TODO traduct
+        $day_name=trad('sunday',$_SESSION["language"]);
     } else if($day_number==2){
-        $day_name="Lundi";//TODO traduct
+        $day_name=trad('monday',$_SESSION["language"]);
     } else if($day_number==3){
-        $day_name="Mardi";//TODO traduct
+        $day_name=trad('tuesday',$_SESSION["language"]);
     } else if($day_number==4){
-        $day_name="Mercredi";//TODO traduct
+        $day_name=trad('wednesday',$_SESSION["language"]);
     } else if($day_number==5){
-        $day_name="Jeudi";//TODO traduct
+        $day_name=trad('thursday',$_SESSION["language"]);
     } else if($day_number==6){
-        $day_name="Vendredi";//TODO traduct
+        $day_name=trad('friday',$_SESSION["language"]);
     } else if($day_number==7){
-        $day_name="Samedi";//TODO traduct
+        $day_name=trad('saturday',$_SESSION["language"]);
     }
 
     if($month=='01'){
-        $month_name='janvier';//TODO traduct
+        $month_name=trad('january',$_SESSION["language"]);
     } else if($month=='02'){
-        $month_name='février';//TODO traduct
+        $month_name=trad('february',$_SESSION["language"]);
     } else if($month=='03'){
-        $month_name='mars';//TODO traduct
+        $month_name=trad('march',$_SESSION["language"]);
     } else if($month=='04'){
-        $month_name='avril';//TODO traduct
+        $month_name=trad('april',$_SESSION["language"]);
     } else if($month=='05'){
-        $month_name='mai';//TODO traduct
+        $month_name=trad('may',$_SESSION["language"]);
     } else if($month=='06'){
-        $month_name='juin';//TODO traduct
+        $month_name=trad('june',$_SESSION["language"]);
     } else if($month=='07'){
-        $month_name='juillet';//TODO traduct
+        $month_name=trad('july',$_SESSION["language"]);
     } else if($month=='08'){
-        $month_name='août';//TODO traduct
+        $month_name=trad('august',$_SESSION["language"]);
     } else if($month=='09'){
-        $month_name='septembre';//TODO traduct
+        $month_name=trad('september',$_SESSION["language"]);
     } else if($month=='10'){
-        $month_name='octobre';//TODO traduct
+        $month_name=trad('october',$_SESSION["language"]);
     } else if($month=='11'){
-        $month_name='novembre';//TODO traduct
+        $month_name=trad('november',$_SESSION["language"]);
     } else if($month=='12'){
-        $month_name='décembre';//TODO traduct
+        $month_name=trad('december',$_SESSION["language"]);
     }
 
     
@@ -162,7 +161,6 @@ foreach ($days as $day) {
         $absences_fibre=select_operator_absence_at_date_and_by_sector($day_string,'1');
         if($absences!=[]){
             foreach($absences as $absence){
-                // echo $day_string;
                 //  $date_start=new DateTime($absence['oa_start_hour_date']);
                 //  $date_end=new DateTime($absence['oa_end_hour_date']);
                 $start_date_time= new DateTime($absence['oa_start_hour_date']);
@@ -455,6 +453,7 @@ foreach ($days as $day) {
 
     $t_day_name[$n]=$day_name;
     $t_day[$n]=$day;
+    $t_month[$n]=$month;
     $t_month_name[$n]=$month_name;
     $t_year[$n]=$year;
     $t_verif_occupation[$n]=$verif_occupation;
@@ -593,9 +592,6 @@ $dataPointsFibreN1 = array(
         <meta charset="utf-8">
         <!--<link href="images/logo.svg" rel="shortcut icon">-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Icewall admin is super flexible, powerful, clean & modern responsive bootstrap admin template with unlimited possibilities.">
-        <meta name="keywords" content="admin template, Icewall Admin Template, dashboard template, flat admin template, responsive admin template, web app">
-        <meta name="author" content="LEFT4CODE">
         <title><?php echo trad('files_awaiting_planning',$_SESSION["language"]);?></title>
         <!-- BEGIN: CSS Assets-->
         <link rel="stylesheet" href="dist/css/app.css" />
@@ -797,7 +793,7 @@ $dataPointsFibreN1 = array(
         <div class="intro-y box mt-6">
             <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                 <h2 class="fs-lg fw-medium truncate me-5">
-                    Planning global rectif
+                    <?php echo trad('overall_grinding_planning',$_SESSION['language']);?>
                 </h2>
             </div>
             
@@ -808,9 +804,8 @@ $dataPointsFibreN1 = array(
                         <?php
                         for($j=0; $j<$n; $j++ ){
                             if($t_verif_occupation[$j]==0){
-                            ?>
-                                <a href="">
-                            <?php } ?>
+                                ?> <a href="grinding_day_plan.php?date=<?php echo $t_year[$j].'-'.$t_month[$j].'-'.$t_day[$j];?>"> <?php
+                            } ?>
                                 <div class="mb-6">
                                     <?php echo $t_day_name[$j].' '.$t_day[$j].' '.$t_month_name[$j].' '.$t_year[$j]; if($t_verif_occupation[$j]==0){?> <span style="float:right;">(<?php echo $t_occupation_heures[$j].'h'; if($t_occupation_minutes[$j] != 0){ echo $t_occupation_minutes[$j].'m';} echo '/'.$t_dispo[$j];?> h)</span><?php } ?>
                                     <br>
@@ -837,24 +832,24 @@ $dataPointsFibreN1 = array(
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                         <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge du jour<br>Fibre
+                                <?php echo trad('days_workload',$_SESSION["language"]);?><br><?php echo trad('fiber',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="fiber_day_plan.php?date=<?php echo $now;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1" style="border-radius: 0 0 .375rem .375rem;">
-                            <em><u>Temps total disponible : <?php echo $day_grinding_dispo_fibre;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $day_grinding_dispo_fibre;?> h</u></em>
                             <div id="chartContainerFibreN" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_occupation_decimal_fibre;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_dispo_fibre-$day_grinding_occupation_decimal_fibre;?> h</span> 
                                 </div>
@@ -867,25 +862,25 @@ $dataPointsFibreN1 = array(
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge du jour<br>Garnissage
+                                <?php echo trad('days_workload',$_SESSION["language"]);?><br><?php echo trad('lining',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="lining_day_plan.php?date=<?php echo $now;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps total disponible : <?php echo $day_grinding_dispo_lining;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $day_grinding_dispo_lining;?> h</u></em>
 
                             <div id="chartContainerLiningN" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_occupation_decimal_lining;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_dispo_lining-$day_grinding_occupation_decimal_lining;?> h</span> 
                                 </div>
@@ -894,59 +889,59 @@ $dataPointsFibreN1 = array(
                     </div>
                     <!-- END: lining charge -->
 
-                    <!-- BEGIN: ébauche charge -->
+                    <!-- BEGIN: roughing charge -->
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge du jour<br>Ébauche
+                                <?php echo trad('days_workload',$_SESSION["language"]);?><br><?php echo trad('roughing',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="roughing_day_plan.php?date=<?php echo $now;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps total disponible : <?php echo $day_grinding_dispo_ebauche;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $day_grinding_dispo_ebauche;?> h</u></em>
                             <div id="chartContainerEbaucheN" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_occupation_decimal_ebauche;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_dispo_ebauche-$day_grinding_occupation_decimal_ebauche;?> h</span> 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- END: ébauche charge -->
+                    <!-- END: roughing charge -->
 
                     <!-- BEGIN: grinding charge -->
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge du jour<br>Rectification
+                                <?php echo trad('days_workload',$_SESSION["language"]);?><br><?php echo trad('grinding',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="grinding_day_plan.php?date=<?php echo $now;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps total disponible : <?php echo $day_grinding_dispo;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $day_grinding_dispo;?> h</u></em>
                             <div id="chartContainerGrindingN" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_occupation_decimal;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $day_grinding_dispo-$day_grinding_occupation_decimal;?> h</span> 
                                 </div>
@@ -964,7 +959,7 @@ $dataPointsFibreN1 = array(
                 <div class="intro-y box mt-5">
                     <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                         <h2 class="fw-medium fs-base me-auto">
-                            Informations du jour
+                            <?php echo trad('informations_of_day',$_SESSION['language']);?>
                         </h2>
                     </div>
                     <div id="icon-alert" class="p-5">
@@ -990,23 +985,23 @@ $dataPointsFibreN1 = array(
                                         $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
                                         
                                         if($hm>=$dt){
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                         } else {
                                             $absence_time=$dt-$hm;
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                         }
                                     } else {
                                         if($start_date != $now && $end_date != $now){
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                         } else if($start_date == $now){
                                             $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
                                             $dt=$operator_default_production_time[0]['otd_production_time'];
                                             $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
                                             if($hm>=$dt){
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                             } else {
                                                 $absence_time=$dt-$hm;
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                             }
                                            
 
@@ -1015,10 +1010,10 @@ $dataPointsFibreN1 = array(
                                             $dt=$operator_default_production_time[0]['otd_production_time'];
                                             $hm=$absence_operator['oa_during_hours_last_day'].'.'.$absence_operator['oa_during_minutes_last_day'];
                                             if($hm>=$dt){
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                             } else {
                                                 $absence_time=$dt-$hm;
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                             }
                                         }
                                     }
@@ -1045,19 +1040,23 @@ $dataPointsFibreN1 = array(
                                     $end_date=$end_date_time->format('Y-m-d');
 
                                     if($end_date==$start_date){
-                                        echo '• '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        echo '• '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
                                         
                                     } else {
                                         if($start_date != $now && $end_date != $now){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance toute la journée.<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_in_maintenance_all_day',$_SESSION["language"]).'.<br>';
                                         } else if($start_date == $now){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
                                         }else if($end_date == $now){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
                                         }
                                     }
                                     
                                 }
+                            }
+                            
+                            if($absence_operators==[] && $maintenances==[]){
+                                echo trad('nothing_to_report',$_SESSION["language"]);
                             }
 
                             /////////////////////////////////////////////////////////////
@@ -1090,7 +1089,7 @@ $dataPointsFibreN1 = array(
                 <div class="intro-y box mt-5">
                     <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                         <h2 class="fw-medium fs-base me-auto">
-                            Important
+                            <?php echo trad('important',$_SESSION["language"]);?>
                         </h2>
                     </div>
                     <div id="icon-alert" class="p-5">
@@ -1103,7 +1102,7 @@ $dataPointsFibreN1 = array(
 
                                 $late_orders=select_late_orders($now);
                                 foreach($late_orders as $late_order){
-                                    echo '• L\'étape '.$late_order['stp_label'].' de la pièce '.$late_order['pt_piece_id'].' est en retard.<br>';
+                                    echo '• '.trad('the_step',$_SESSION['language']).' "'.trad($late_order['stp_label'],$_SESSION['language']).'" '.trad('of_the_piece',$_SESSION['language']).' '.$late_order['pt_piece_id'].' '.trad('is_behind_schedule',$_SESSION['language']).'.<br>';
                                 }
 
                                 /////////////////////////////////////////////////////////////
@@ -1130,24 +1129,24 @@ $dataPointsFibreN1 = array(
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                         <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge j+1<br>Fibre
+                                <?php echo trad('workload_d+1',$_SESSION["language"]);?><br><?php echo trad('fiber',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="fiber_day_plan.php?date=<?php echo $tomorrow;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps disponible : <?php echo $tom_grinding_dispo_fibre;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $tom_grinding_dispo_fibre;?> h</u></em>
                             <div id="chartContainerFibreN1" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_occupation_decimal_fibre;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_dispo_fibre-$tom_grinding_occupation_decimal_fibre;?> h</span> 
                                 </div>
@@ -1160,24 +1159,24 @@ $dataPointsFibreN1 = array(
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge j+1<br>Garnissage
+                                <?php echo trad('workload_d+1',$_SESSION["language"]);?><br><?php echo trad('lining',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="lining_day_plan.php?date=<?php echo $tomorrow;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps disponible : <?php echo $tom_grinding_dispo_lining;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $tom_grinding_dispo_lining;?> h</u></em>
                             <div id="chartContainerLiningN1" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_occupation_decimal_lining;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_dispo_lining-$tom_grinding_occupation_decimal_lining;?> h</span> 
                                 </div>
@@ -1186,58 +1185,58 @@ $dataPointsFibreN1 = array(
                     </div>
                     <!-- END: lining charge -->
 
-                    <!-- BEGIN: ébauche charge -->
+                    <!-- BEGIN: roughing charge -->
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge j+1<br>Ébauche
+                                <?php echo trad('workload_d+1',$_SESSION["language"]);?><br><?php echo trad('roughing',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="roughing_day_plan.php?date=<?php echo $tomorrow;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps disponible : <?php echo $tom_grinding_dispo_ebauche;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $tom_grinding_dispo_ebauche;?> h</u></em>
                             <div id="chartContainerEbaucheN1" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_occupation_decimal_ebauche;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_dispo_ebauche-$tom_grinding_occupation_decimal_ebauche;?> h</span> 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- END: ébauche charge -->
+                    <!-- END: roughing charge -->
 
                     <!-- BEGIN: grinding charge -->
                     <div class="g-col-12 g-col-sm-6 g-col-lg-3 mt-8">
                     <div class="intro-y d-flex align-items-center h-10" style="background:white; border-radius: .375rem .375rem 0 0 ; min-height:50px; padding:5px;">
                             <h2 class="fs-lg fw-medium truncate me-5">
-                                Charge j+1<br>Rectification
+                                <?php echo trad('workload_d+1',$_SESSION["language"]);?><br><?php echo trad('grinding',$_SESSION["language"]);?>
                             </h2>
-                            <a href="" class="ms-auto text-theme-26 dark-text-theme-33 truncate">Voir planning</a> 
+                            <a href="grinding_day_plan.php?date=<?php echo $tomorrow;?>" class="ms-auto text-theme-26 dark-text-theme-33 truncate"><?php echo trad('see_planning',$_SESSION["language"]);?></a> 
                         </div>
                         <div class="intro-y box p-5 mt-1">
-                            <em><u>Temps disponible : <?php echo $tom_grinding_dispo;?> h</u></em>
+                            <em><u><?php echo trad('available_time',$_SESSION["language"]);?> : <?php echo $tom_grinding_dispo;?> h</u></em>
                             <div id="chartContainerGrindingN1" style="height: 200px; width: 100%;"></div>
                             <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
                             <div class="mt-8">
                                 <div class="d-flex align-items-center">
                                     <div class="w-2 h-2 bg-theme-17 rounded-circle me-3" style="background-color:#FFAE42 !important"></div>
-                                    <span class="truncate">Charge</span> 
+                                    <span class="truncate"><?php echo trad('workload',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_occupation_decimal;?> h</span> 
                                 </div>
                                 <div class="d-flex align-items-center mt-4">
                                     <div class="w-2 h-2 bg-theme-35 rounded-circle me-3" style="background-color:#eee !important;"></div>
-                                    <span class="truncate">Disponible</span> 
+                                    <span class="truncate"><?php echo trad('available',$_SESSION["language"]);?></span> 
                                     <div class="h-px flex-1 border border-start border-dashed border-gray-300 mx-3 d-xl-none"></div>
                                     <span class="fw-medium ms-xl-auto"><?php echo $tom_grinding_dispo-$tom_grinding_occupation_decimal;?> h</span> 
                                 </div>
@@ -1255,7 +1254,7 @@ $dataPointsFibreN1 = array(
             <div class="intro-y box mt-5">
                 <div class="d-flex flex-column flex-sm-row align-items-center p-5 border-bottom border-gray-200 dark-border-dark-5">
                     <h2 class="fw-medium fs-base me-auto">
-                        Informations lendemain
+                        <?php echo trad('next_day_informations',$_SESSION["language"]);?>
                     </h2>
                 </div>
                 <div id="icon-alert" class="p-5">
@@ -1280,23 +1279,23 @@ $dataPointsFibreN1 = array(
                                         $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
                                         
                                         if($hm>=$dt){
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                         } else {
                                             $absence_time=$dt-$hm;
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                         }
                                     } else {
                                         if($start_date != $tomorrow && $end_date != $tomorrow){
-                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                            echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                         } else if($start_date == $tomorrow){
                                             $operator_default_production_time = select_operator_default_time_by_id($absence_operator['oa_operator_id']);
                                             $dt=$operator_default_production_time[0]['otd_production_time'];
                                             $hm=$absence_operator['oa_during_hours_first_day'].'.'.$absence_operator['oa_during_minutes_first_day'];
                                             if($hm>=$dt){
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                             } else {
                                                 $absence_time=$dt-$hm;
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                             }
                                            
 
@@ -1305,10 +1304,10 @@ $dataPointsFibreN1 = array(
                                             $dt=$operator_default_production_time[0]['otd_production_time'];
                                             $hm=$absence_operator['oa_during_hours_last_day'].'.'.$absence_operator['oa_during_minutes_last_day'];
                                             if($hm>=$dt){
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).'.<br>';
                                             } else {
                                                 $absence_time=$dt-$hm;
-                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' est absent '.$hm.' h.<br>';
+                                                echo '• '.$absence_operator['us_firstname'].' '.$absence_operator['us_name'].' '.trad('is_absent',$_SESSION["language"]).' '.$hm.' h.<br>';
                                             }
                                         }
                                     }
@@ -1333,15 +1332,15 @@ $dataPointsFibreN1 = array(
                                     $end_date=$end_date_time->format('Y-m-d');
 
                                     if($end_date==$start_date){
-                                        echo '• '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                        echo '• '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
                                         
                                     } else {
                                         if($start_date != $tomorrow && $end_date != $tomorrow){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance toute la journée.<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_in_maintenance_all_day',$_SESSION["language"]).'.<br>';
                                         } else if($start_date == $tomorrow){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_first_day'].'.'.$maintenance['ms_during_minutes_first_day'].' h<br>';
                                         }else if($end_date == $tomorrow){
-                                            echo '• Machine '.$maintenance['mc_label'].' est en maintenance pendant '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
+                                            echo '• Machine '.$maintenance['mc_label'].' '.trad('is_under_maintenance_for',$_SESSION["language"]).' '.$maintenance['ms_during_hours_last_day'].'.'.$maintenance['ms_during_minutes_last_day'].' h<br>';
                                         }
                                     }
                                     
@@ -1368,7 +1367,7 @@ $dataPointsFibreN1 = array(
                             /////////////////////////////////////////////////////////////
                             
                             if($absence_operators==[] && $maintenances==[] && $alert_overtimes==[]){
-                                echo 'Rien à signaler.';
+                                echo trad('nothing_to_report',$_SESSION["language"]);
                             }
                             ?>
                         </div>

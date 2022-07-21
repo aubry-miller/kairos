@@ -51,11 +51,11 @@ $title = 'Mandrel Planning';
         trad('august',$_SESSION["language"]),
         trad('september',$_SESSION["language"]),
         trad('october',$_SESSION["language"]),
-        trad('november',$_SESSION["language"]),
+        trad('november',$_SESSION["language"]),#‰
         trad('december',$_SESSION["language"]));
 
     if(isset($_GET['month']) && isset($_GET['year']))
-    {
+    {#
         $month=$_GET['month'];
         $year=$_GET['year'];
     }

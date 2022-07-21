@@ -841,7 +841,7 @@ function first_planningSimulation($millnet_id,$customer_number,$customer_name,$c
     
     
                 } else {
-                    if($step['stp_label'] == 'ebauche'){
+                    if($step['stp_label'] == 'roughing'){
                         $last_step=new DateTime($step_date);
                         $last_step->modify('+3 day');
                         $last_step_string = $last_step->format('Y-m-d');

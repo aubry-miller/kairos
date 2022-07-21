@@ -3,6 +3,8 @@ if(!isset($_SESSION['prenom_nom'])){
     session_destroy();
     header("location:index.php");
 }
+
+$now_header=date('Y-m-d');
 ?>
 
 
@@ -106,17 +108,109 @@ if(!isset($_SESSION['prenom_nom'])){
                 </li>
                 <hr>
                 <li>
-                    <a href="lining_day_plan.php" class="side-menu <?php if(
-                                str_contains($_SERVER['REQUEST_URI'],'/lining_day_plan.php')
-                                ){ echo 'side-menu--active';}?>">
+                    <a href="javascript:;.html" class="side-menu  
+                        <?php if(
+                            str_contains($_SERVER['REQUEST_URI'],'_day_plan.php')){
+                                echo 'side-menu--active';
+                            }?>"
+                    >
                         <div class="side-menu__icon"> <i data-feather="calendar"></i> </div>
-                        <div class="side-menu__title"><?php echo trad('lining_day_plan',$_SESSION["language"]);?></div>
+                        <div class="side-menu__title">
+                            <?php echo trad('day_plannings',$_SESSION["language"]);?> 
+                            <div class="side-menu__sub-icon"> <i data-feather="chevron-down"></i> </div>
+                        </div>
                     </a>
+                    <ul class="<?php if(
+                            str_contains($_SERVER['REQUEST_URI'],'_day_plan.php')){
+                                echo 'side-menu__sub-open';
+                            }?>"
+                    >                                    
+                        <li>
+                            <a href="fiber_day_plan.php?date=<?php echo $now_header;?>" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('fiber_day_plan',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="lining_day_plan.php?date=<?php echo $now_header;?>" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('lining_day_plan',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="roughing_day_plan.php?date=<?php echo $now_header;?>" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('roughing_day_plan',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="grinding_day_plan.php?date=<?php echo $now_header;?>" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('grinding_day_plan',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+
+
+                <li>
+                    <a href="javascript:;.html" class="side-menu  
+                        <?php if(
+                            str_contains($_SERVER['REQUEST_URI'],'_workshop_workload.php')){
+                                echo 'side-menu--active';
+                            }?>"
+                    >
+                        <div class="side-menu__icon"> <i data-feather="list"></i> </div>
+                        <div class="side-menu__title">
+                            <?php echo trad('load_per_workshop',$_SESSION["language"]);?> 
+                            <div class="side-menu__sub-icon"> <i data-feather="chevron-down"></i> </div>
+                        </div>
+                    </a>
+                    <ul class="<?php if(
+                            str_contains($_SERVER['REQUEST_URI'],'_workshop_workload.php')){
+                                echo 'side-menu__sub-open';
+                            }?>"
+                    >                                    
+                        <li>
+                            <a href="fiber_workshop_workload.php" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('fiber',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="lining_workshop_workload.php" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('lining',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="roughing_workshop_workload.php" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('roughing',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="grinding_workshop_workload.php" class="side-menu">
+                                <div class="side-menu__icon" style="color:rgb(120,120,120);"> •-> </div>
+                                <div class="side-menu__title"> <?php echo trad('grinding',$_SESSION["language"]);?> </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+
+
+
                 <hr>
                 <li>
                     <a href="mecanical_dashboard.php" class="side-menu <?php if(
-                                str_contains($_SERVER['REQUEST_URI'],'/lining_day_plan.php')
+                                str_contains($_SERVER['REQUEST_URI'],'/mecanical_dashboard.php')
                                 ){ echo 'side-menu--active';}?>">
                         <div class="side-menu__icon"> <i data-feather="sliders"></i> </div>
                         <div class="side-menu__title">Mecanical Dashboard</div>

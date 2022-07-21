@@ -586,8 +586,8 @@ function select_image_profil_by_id_user($id){
  function select_jobs_by_day_and_step_id($date,$step){
     $pdo=connect();
 
-    $sqlQuery = $pdo->prepare("select * from planning_task, piece, rubber, user where pc_rubber_id=rb_id and pt_piece_id=pc_id and pt_operator_id=us_id and pt_planned_start_date like ? and pt_step_id=? order by pt_planned_start_date ASC");
-    $sqlQuery->execute(array($date.'%',$step));
+    $sqlQuery = $pdo->prepare("select * from planning_task, piece, rubber, user, orders, fiber where fb_id=pc_fiber_id and pc_order_id=od_millnet_id and pc_rubber_id=rb_id and pt_piece_id=pc_id and pt_operator_id=us_id and pt_date = ? and pt_step_id=? order by pt_planned_start_date ASC");
+    $sqlQuery->execute(array($date,$step));
     $result = $sqlQuery->fetchAll();
     $pdo=null;
 
@@ -696,6 +696,42 @@ function select_planning_task_by_piece_id_and_status_is_not($id,$status){
     $pdo=connect();
 
     $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  pt_step_id = 4 and (pt_status='Planned' or pt_status='In Progress')");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_furthest_roughing_plan_date(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  pt_step_id = 3 and (pt_status='Planned' or pt_status='In Progress')");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_furthest_fiber_plan_date(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  pt_step_id = 1 and (pt_status='Planned' or pt_status='In Progress')");
+    $sqlQuery->execute();
+    $result = $sqlQuery->fetchAll();
+    $pdo=null;
+
+    return $result; 
+
+ }
+
+ function select_furthest_lining_plan_date(){
+    $pdo=connect();
+
+    $sqlQuery = $pdo->prepare("select max(pt_date) from planning_task where  (pt_step_id = 2 or pt_step_id = 6) and (pt_status='Planned' or pt_status='In Progress')");
     $sqlQuery->execute();
     $result = $sqlQuery->fetchAll();
     $pdo=null;
